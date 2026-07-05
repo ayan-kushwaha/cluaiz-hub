@@ -56,7 +56,7 @@ The engine reads this file *once* at boot. It contains a hashmap of all known `e
 This file defines *how* the component executes, its hardware limits, and its exact AI interface. It is lazily parsed only when the component is triggered.
 
 > [!TIP]
-> **Complete Example:** View a fully documented, real-world example of this file here: [**`doc/architecture/manifest.yaml`**](file:///c:/Users/Aryan/my/Cluaiz-workspace/Cluaiz-Technologies/cluaiz-hub/doc/architecture/manifest.yaml).
+> **Complete Example:** View a fully documented, real-world example of this file here: [**`docs/architecture/manifest.yaml`**](file:///c:/Users/Aryan/my/Cluaiz-workspace/Cluaiz-Technologies/cluaiz-hub/docs/architecture/manifest.yaml).
 
 ### Base Metadata Fields
 | Keyword | Type | Description |
@@ -75,6 +75,13 @@ This file defines *how* the component executes, its hardware limits, and its exa
 | `cel_syntax` | `Option<String>`| The exact CEL syntax exposed to the AI model. |
 | `cel_returns` | `Option<String>`| JSON schema description of what the CEL call returns. |
 | `usage_example` | `Option<String>`| Human-readable example of how to invoke the extension. |
+
+### `settings` and `system_bindings` Blocks (Dynamic Config Injection)
+| Keyword | Type | Description |
+|---|---|---|
+| `settings` | `Map<String, SettingDef>` | Defines variables the plugin accepts (e.g., `api_key`). Engine resolves these from user config and injects them. |
+| `system_bindings` | `Vec<String>` | Tells the Engine to pass internal states (e.g., `"system_booster.think_mode"`) down to the payload. No disk I/O needed by the plugin! |
+
 
 ### `engine_rules` Block (Security & Hardware Limits)
 | Keyword | Type | Description |

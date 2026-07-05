@@ -69,12 +69,18 @@ fn main() {
         );
 
         let json_str = payload.to_string();
-        let c_str = CString::new(json_str).unwrap();
-        let result_ptr = execute_cel(c_str.as_ptr());
+        let bytes = json_str.as_bytes();
+        let ext_payload = cluaiz_search::ExtensionPayload {
+            payload_type: cluaiz_search::PayloadType::Json,
+            data_ptr: bytes.as_ptr(),
+            data_len: bytes.len(),
+        };
+
+        let result_ptr = execute_cel(&ext_payload as *const _);
 
         let result_c_str = unsafe { CStr::from_ptr(result_ptr) };
-        let result_str = result_c_str.to_str().unwrap().to_string();
-        cluaiz_search::free_string(result_ptr);
+        let result_str = result_c_str.to_string_lossy().into_owned();
+        unsafe { cluaiz_search::free_string(result_ptr) };
 
         match serde_json::from_str::<Value>(&result_str) {
             Ok(parsed) => {
@@ -95,14 +101,13 @@ fn main() {
                 } else {
                     println!(
                         "❌ ERROR JSON DUMP: {}",
-                        serde_json::to_string_pretty(&parsed)
-                            .unwrap_or_else(|_| "Unknown error".to_string())
+                        serde_json::to_string_pretty(&parsed).unwrap()
                     );
                 }
             }
             Err(e) => {
-                println!("❌ FAILED TO PARSE JSON: {}", e);
-                println!("RAW: {}", result_str);
+                println!("❌ FAILED TO PARSE JSON RESULT! Error: {}", e);
+                println!("Raw output:\n{}", result_str);
             }
         }
     }

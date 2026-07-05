@@ -7,7 +7,7 @@ category: "Tutorials"
 # 4. Creating `SKILL.md` for Your Tools
 
 > [!TIP]
-> **For full architectural details, reference:** [`skill_architecture.md`](file:///c:/Users/Aryan/my/Cluaiz-workspace/Cluaiz-Technologies/cluaiz-hub/doc/architecture/skill_architecture.md)
+> **For full architectural details, reference:** [`skill_architecture.md`](file:///c:/Users/Aryan/my/Cluaiz-workspace/Cluaiz-Technologies/cluaiz-hub/docs/architecture/skill_architecture.md)
 
 When you build a new tool for cluaiz (whether it's an Extension, a WASM Plugin, or an MCP Server), you are building **Muscle**. 
 

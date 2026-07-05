@@ -18,7 +18,7 @@ core_metadata:
 
 # Web Intelligence Skill (cluaiz-search)
 
-You are equipped with the cluaiz Native Metasearch extension. This gives you the power to execute real-time web searches and fetch raw content from specific URLs safely and efficiently, directly bypassing hallucination.
+You are equipped with the cluaiz Native Metasearch extension. This gives you the power to execute real-time web searches and fetch raw content from specific URLs.
 
 ## Core Directives
 
@@ -43,7 +43,7 @@ When the user provides an exact URL (e.g., "Summarize https://github.com"), invo
 
 ## System Settings Integration (MUST FOLLOW)
 
-Your behavior and query construction MUST dynamically adapt to the current Engine `system_booster` settings injected into your context.
+Your behavior and query construction MUST dynamically adapt to the current Engine `system_booster` settings injected into your context. The Engine payload directly provides these bindings.
 
 ### Deep Thinking Mode (`think_mode: ON`)
 
@@ -52,12 +52,11 @@ When you detect you are in Deep Thinking mode:
 1. **Multi-Aspect Queries:** Do not settle for simple keywords. Break the user's complex intent down and fetch deep context. Example: Instead of `"Rust async"`, use `"Rust 2026 async updates OR memory model changes performance benchmarks"`.
 2. **Iterative Searching:** If the first result does not contain the answer, you must execute a follow-up query with refined terms.
 3. **Synthesis:** You must synthesize the data comprehensively, comparing multiple sources.
-4. **Reference Material:** If you are unsure about provider limitations or heuristics (Tavily vs DuckDuckGo), read the `references/search_heuristics.md` file.
-5. **Use CEL Macros:** For deep searching, do not write raw CEL. Execute the pre-built macro: `run scripts/deep_search_macro.cel`.
+4. **Use CEL Macros:** For deep searching, execute the pre-built macro: `run scripts/deep_search_macro.cel`.
 
 ### Fast Mode (`think_mode: OFF`)
 
-When you are in Fast (Zero-Latency) mode:
+When you are in Fast mode:
 
 1. **Precise Queries:** Keep your queries extremely short, exact, and highly specific to minimize execution time. Example: `"Rust latest version release date"`.
 2. **Single Shot:** Do not perform iterative searches. Rely on the first batch of results.

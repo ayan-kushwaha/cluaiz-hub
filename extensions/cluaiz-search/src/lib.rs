@@ -9,25 +9,41 @@ pub mod config;
 use search_engine::multiplexer::Multiplexer;
 use parser::{stripper::Stripper, ranker::Ranker, metadata::MetadataExtractor};
 
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub enum PayloadType {
+    Json,
+    Cdql,
+    WasmBinary,
+    RawBytes,
+    Bincode,
+}
+
+#[repr(C)]
+pub struct ExtensionPayload {
+    pub payload_type: PayloadType,
+    pub data_ptr: *const u8,
+    pub data_len: usize,
+}
+
 /// The main FFI entry point for the cluaiz engine to call into this native extension.
-/// Engine calls this via `UnifiedExecutor::execute()` after parsing CEL itself.
-/// The extension NEVER parses CEL — the engine handles that in `ffi_bridge.rs`.
 #[no_mangle]
-pub extern "C" fn execute_cel(cel_command_ptr: *const c_char) -> *mut c_char {
-    if cel_command_ptr.is_null() {
+pub extern "C" fn execute_cel(payload_ptr: *const ExtensionPayload) -> *mut c_char {
+    if payload_ptr.is_null() {
         return create_error_response("Null pointer received for CEL command");
     }
 
-    // SAFETY: Engine guarantees valid C string from UnifiedExecutor
-    let c_str = unsafe { CStr::from_ptr(cel_command_ptr) };
-    let cel_json = match c_str.to_str() {
+    let payload = unsafe { &*payload_ptr };
+    let bytes = unsafe { std::slice::from_raw_parts(payload.data_ptr, payload.data_len) };
+    
+    let cel_json = match std::str::from_utf8(bytes) {
         Ok(s) => s,
-        Err(_) => return create_error_response("Invalid UTF-8 in CEL command pointer"),
+        Err(_) => return create_error_response("Invalid UTF-8 in payload bytes"),
     };
 
     let command: Value = match serde_json::from_str(cel_json) {
         Ok(v) => v,
-        Err(_) => return create_error_response("Failed to parse CEL JSON payload"),
+        Err(e) => return create_error_response(&format!("Failed to parse CEL JSON payload. Error: {}, Payload: '{}'", e, cel_json)),
     };
 
     let rt = match tokio::runtime::Runtime::new() {
@@ -58,7 +74,7 @@ async fn process_command(command: Value) -> Value {
         arr.iter().filter_map(|v| v.as_str().map(|s| s.to_string())).collect::<Vec<String>>()
     });
 
-    let config = match config::get_dynamic_config().await {
+    let config = match config::get_dynamic_config(&command).await {
         Ok(c) => c,
         Err(e) => {
             return json!({ "status": "error", "message": format!("Failed to fetch dynamic config: {}", e) });

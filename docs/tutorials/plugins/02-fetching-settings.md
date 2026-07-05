@@ -18,6 +18,15 @@ In your `manifest-plugin.yaml`, declare the hardware or booster variables you ne
 
 ```yaml
 # ---------------------------------------------------------------------
+# CONFIGURATION SETTINGS
+# ---------------------------------------------------------------------
+# [NEW SCHEMA] Dynamic settings definition. This tells the UI and Engine 
+# what configurable variables exist, their types, and default values.
+settings:
+  api_key: { type: "string", default: "", desc: "API Key for service" }
+  mode: { type: "enum", options: ["fast", "accurate"], default: "fast", desc: "Execution mode" }
+
+# ---------------------------------------------------------------------
 # SYSTEM BINDINGS (Dynamic Hardware & Booster State)
 # ---------------------------------------------------------------------
 system_bindings:
@@ -41,6 +50,7 @@ struct CelPayload {
     action: String,
     system_booster: Option<serde_json::Value>,
     system_control: Option<serde_json::Value>,
+    settings: Option<serde_json::Value>, // Custom plugin settings injected here!
     // Your specific plugin arguments
     expr: Option<String>, 
 }

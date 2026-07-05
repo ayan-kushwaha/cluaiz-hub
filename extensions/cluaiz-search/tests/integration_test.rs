@@ -12,18 +12,24 @@ fn save_test_output(test_name: &str, content: &str) {
 /// Helper to call the FFI boundary
 fn call_execute_cel(payload: serde_json::Value) -> String {
     let json_str = payload.to_string();
-    let c_str = CString::new(json_str).unwrap();
+    let bytes = json_str.as_bytes();
+    
+    let ext_payload = cluaiz_search::ExtensionPayload {
+        payload_type: cluaiz_search::PayloadType::Json,
+        data_ptr: bytes.as_ptr(),
+        data_len: bytes.len(),
+    };
 
-    // Call the FFI function
-    let result_ptr = execute_cel(c_str.as_ptr());
-
-    // Read the string back
-    let result_c_str = unsafe { CStr::from_ptr(result_ptr) };
-    let result_str = result_c_str.to_str().unwrap().to_string();
-
-    // Free the string
-    cluaiz_search::free_string(result_ptr);
-
+    // Call the function directly
+    let result_ptr = execute_cel(&ext_payload as *const _);
+    
+    // Convert result back to Rust string
+    assert!(!result_ptr.is_null());
+    let result_str = unsafe { CStr::from_ptr(result_ptr).to_string_lossy().into_owned() };
+    
+    // Free the memory
+    unsafe { cluaiz_search::free_string(result_ptr) };
+    
     result_str
 }
 
@@ -159,8 +165,12 @@ fn test_query_searxng_with_system_bindings() {
     let parsed: Value = serde_json::from_str(&res).unwrap();
 
     if parsed["status"] == "success" {
-        let text = parsed["results"].as_str().unwrap();
-        assert!(text.len() <= 300);
+        let results_arr = parsed["results"].as_array().unwrap();
+        if let Some(first) = results_arr.first() {
+            if let Some(content) = first["raw_content"].as_str() {
+                assert!(content.len() <= 300);
+            }
+        }
     }
 }
 

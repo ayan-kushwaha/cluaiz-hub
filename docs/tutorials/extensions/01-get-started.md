@@ -11,7 +11,7 @@ Welcome to the cluaiz Extension Developer Guide. In cluaiz, **Extensions** (ofte
 Unlike standard web APIs, cluaiz extensions run bare-metal. They receive data from the core cluaiz Engine via **C-Pointers (FFI Boundaries)**, making them extremely fast and memory-efficient.
 
 > [!IMPORTANT]
-> **For more details, reference:** [`skill_architecture.md`](file:///c:/Users/Aryan/my/Cluaiz-workspace/Cluaiz-Technologies/cluaiz-hub/doc/architecture/skill_architecture.md)
+> **For more details, reference:** [`skill_architecture.md`](file:///c:/Users/Aryan/my/Cluaiz-workspace/Cluaiz-Technologies/cluaiz-hub/docs/architecture/skill_architecture.md)
 > 
 > For **Extensions**, creating a `SKILL.md` file alongside your DLL is a **STRICT REQUIREMENT**. The DLL provides the muscle, but without a `SKILL.md`, the AI has no "Brain" or context on how to use it. 
 

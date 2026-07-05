@@ -22,6 +22,15 @@ In your `manifest-mcp.yaml`, request the variables you need:
 
 ```yaml
 # ---------------------------------------------------------------------
+# CONFIGURATION SETTINGS
+# ---------------------------------------------------------------------
+# [NEW SCHEMA] Dynamic settings definition. This tells the UI and Engine 
+# what configurable variables exist, their types, and default values.
+settings:
+  api_key: { type: "string", default: "", desc: "API Key for service" }
+  mode: { type: "enum", options: ["fast", "accurate"], default: "fast", desc: "Execution mode" }
+
+# ---------------------------------------------------------------------
 # SYSTEM BINDINGS (Dynamic Hardware & Booster State)
 # ---------------------------------------------------------------------
 system_bindings:
@@ -44,9 +53,13 @@ const server = new McpServer({
   version: "1.0.0"
 });
 
-// Read the cluaiz injected settings
+// Read the cluaiz injected settings (System Bindings)
 const thinkMode = process.env.SYSTEM_BOOSTER__THINK_MODE || "Off";
 const responseLength = process.env.SYSTEM_BOOSTER__RESPONSE_LENGTH || "auto";
+
+// Read custom extension settings (Injected as SETTINGS__KEY)
+const apiKey = process.env.SETTINGS__API_KEY || "";
+const mode = process.env.SETTINGS__MODE || "fast";
 
 console.error(`Starting MCP with Think Mode: ${thinkMode}`);
 

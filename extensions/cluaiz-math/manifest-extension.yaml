@@ -29,4 +29,3 @@ execution:
   envelope: "WASM"
   entry_point: "execute_cel"
   payload_format: "MsgPack"
-  binary_path: ".cluaiz/bin/plugin.wasm"

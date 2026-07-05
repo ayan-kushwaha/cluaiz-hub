@@ -22,6 +22,15 @@ description: "Extension that requires system booster settings"
 type: "extension"
 
 # Request system settings to be injected by the Engine
+# ---------------------------------------------------------------------
+# CONFIGURATION SETTINGS
+# ---------------------------------------------------------------------
+# [NEW SCHEMA] Dynamic settings definition. This tells the UI and Engine 
+# what configurable variables exist, their types, and default values.
+settings:
+  api_key: { type: "string", default: "", desc: "API Key for service" }
+  mode: { type: "enum", options: ["fast", "accurate"], default: "fast", desc: "Execution mode" }
+
 system_bindings:
   - "system_booster.think_mode"
   - "permission.max_memory_mb"
@@ -33,7 +42,7 @@ execution:
 ```
 
 ### What happens here?
-When the AI Agent triggers your extension, the Engine reads `system_bindings`. It opens `system_booster.json`, extracts `think_mode`, and bundles it into the C-Pointer payload sent to your extension.
+When the AI Agent triggers your extension, the Engine reads `system_bindings` and resolves them. It also parses the custom user values for your `settings` (from `~/.cluaiz/engine/config/user_settings.yaml` or default). Then it bundles BOTH the system bindings and the custom settings into the C-Pointer payload sent to your extension.
 
 ---
 
@@ -58,6 +67,7 @@ pub extern "C" fn execute_cel(payload_ptr: *const c_char) -> *mut c_char {
     let json_str = c_str.to_str().unwrap_or("{}");
 
     // Deserialize the Engine's payload
+    // It contains BOTH the `system_bindings` and your custom `settings`!
     if let Ok(command) = serde_json::from_str::<Value>(json_str) {
         
         // Extract the variables requested in manifest

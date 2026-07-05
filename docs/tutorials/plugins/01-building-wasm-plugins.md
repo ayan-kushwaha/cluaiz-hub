@@ -11,7 +11,7 @@ In the cluaiz ecosystem, a **Plugin** is distinct from an Extension. While Exten
 Plugins run entirely within the Engine's WASM sandbox. They are meant for "pure muscle" tasks (e.g., fast math, text parsing) and have absolutely no AI prompt or "brain" attached.
 
 > [!TIP]
-> **For more details, reference:** [`skill_architecture.md`](file:///c:/Users/Aryan/my/Cluaiz-workspace/Cluaiz-Technologies/cluaiz-hub/doc/architecture/skill_architecture.md)
+> **For more details, reference:** [`skill_architecture.md`](file:///c:/Users/Aryan/my/Cluaiz-workspace/Cluaiz-Technologies/cluaiz-hub/docs/architecture/skill_architecture.md)
 > 
 > For **Plugins**, creating a `SKILL.md` file is **OPTIONAL but RECOMMENDED**. While a plugin can execute blindly, providing a `SKILL.md` teaches the AI how to use it properly and gives the AI the power to understand the tool's context.
 

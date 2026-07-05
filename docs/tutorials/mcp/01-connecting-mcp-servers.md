@@ -11,7 +11,7 @@ The **Model Context Protocol (MCP)** is a standardized way for AI models to secu
 Unlike Extensions (Native DLLs) or Plugins (WASM) which run within the cluaiz Engine memory space, MCP servers are **separate processes** (e.g., Node.js or Python scripts).
 
 > [!TIP]
-> **For more details, reference:** [`skill_architecture.md`](file:///c:/Users/Aryan/my/Cluaiz-workspace/Cluaiz-Technologies/cluaiz-hub/doc/architecture/skill_architecture.md)
+> **For more details, reference:** [`skill_architecture.md`](file:///c:/Users/Aryan/my/Cluaiz-workspace/Cluaiz-Technologies/cluaiz-hub/docs/architecture/skill_architecture.md)
 > 
 > For **MCP Servers**, creating a `SKILL.md` file is **OPTIONAL but RECOMMENDED**. Providing a `SKILL.md` teaches the AI exactly how to structure the JSON-RPC arguments for the MCP tool and gives the AI context on why it should call the tool.
 
