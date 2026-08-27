@@ -4,7 +4,7 @@
   "category": "database",
   "hub_type": "plugin",
   "build_type": "binary",
-  "github_action": true,
+  "github_action": false,
   "logo": "/assets/cluaiz-db.webp",
   "title": "Cluaiz Core Database Engine Plugin",
   "description": "High-performance native database plugin with CDQL syntax and in-memory vector storage.",

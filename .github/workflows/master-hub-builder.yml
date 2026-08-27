@@ -60,6 +60,8 @@ jobs:
             
             FILES_TO_ZIP="README.md"
             if [ -f "SKILL.md" ]; then FILES_TO_ZIP="$FILES_TO_ZIP SKILL.md"; fi
+            if [ -f "manifest-plugin.yaml" ]; then FILES_TO_ZIP="$FILES_TO_ZIP manifest-plugin.yaml"; fi
+            if [ -f "manifest-mcp.yaml" ]; then FILES_TO_ZIP="$FILES_TO_ZIP manifest-mcp.yaml"; fi
             if [ -f "manifest-extension.yaml" ]; then FILES_TO_ZIP="$FILES_TO_ZIP manifest-extension.yaml"; fi
             if [ -d "scripts" ]; then FILES_TO_ZIP="$FILES_TO_ZIP scripts"; fi
             if [ -d "references" ]; then FILES_TO_ZIP="$FILES_TO_ZIP references"; fi
