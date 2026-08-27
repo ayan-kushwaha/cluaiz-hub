@@ -6,7 +6,7 @@ category: "Tutorials"
 
 # 2. Fetching Settings & Variables in MCP
 
-Unlike Native Extensions or WASM Plugins—which receive a C-Pointer containing a MsgPack or Bincode payload—MCP servers are entirely separate processes (e.g., Node.js). 
+Unlike in-memory Plugins—which receive a C-Pointer containing a MsgPack or Bincode payload—MCP servers are entirely separate processes (e.g., Node.js). 
 
 They cannot read C-Pointers. So, how does an MCP server read cluaiz Engine settings like `system_booster.think_mode`?
 
@@ -57,7 +57,7 @@ const server = new McpServer({
 const thinkMode = process.env.SYSTEM_BOOSTER__THINK_MODE || "Off";
 const responseLength = process.env.SYSTEM_BOOSTER__RESPONSE_LENGTH || "auto";
 
-// Read custom extension settings (Injected as SETTINGS__KEY)
+// Read custom component settings (Injected as SETTINGS__KEY)
 const apiKey = process.env.SETTINGS__API_KEY || "";
 const mode = process.env.SETTINGS__MODE || "fast";
 

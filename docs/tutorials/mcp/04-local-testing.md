@@ -6,7 +6,7 @@ category: "Tutorials"
 
 # 4. Local Testing for MCP Servers
 
-Testing an MCP server is incredibly simple compared to Extensions or Plugins. Because MCP servers are standard command-line applications that read from `stdin` and write to `stdout`, you don't even need a Rust unit test or a Named Pipe to test them.
+Testing an MCP server is straightforward. Because MCP servers are standard command-line applications that read from `stdin` and write to `stdout`, you don't even need a Rust unit test or a Named Pipe to test them.
 
 ---
 

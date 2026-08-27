@@ -1,14 +1,14 @@
-# Two-Tier Extension Architecture: Registry and Manifest
+# Two-Tier Tool Architecture: Registry and Manifest
 
 ## 1. Diátaxis: Explanation (Architectural Deep Dive)
 
-This document explains the Two-Tier Registry Architecture governing how the cluaiz Engine discovers, indexes, and executes extensions without O(N) directory scanning during boot.
+This document explains the Two-Tier Registry Architecture governing how the cluaiz Engine discovers, indexes, and executes plugins and MCP servers without O(N) directory scanning during boot.
 
 ---
 
 ## 2. Architectural Flow
 
-The engine uses a strict separation of concerns between **Indexing** (`registry.yaml`) and **Execution Rules** (`manifest-extension.yaml` / `manifest-plugin.yaml` / `manifest-mcp.yaml`).
+The engine uses a strict separation of concerns between **Indexing** (`registry.yaml`) and **Execution Rules** (`manifest-plugin.yaml` / `manifest-mcp.yaml`).
 
 ```mermaid
 graph TD
@@ -33,7 +33,7 @@ graph TD
 **Binary Cache:** `registry.bin`  
 **Code Location:** `registry_index.rs`
 
-The engine reads this file *once* at boot. It contains a hashmap of all known `extensions`, `plugins`, and `mcp` servers.
+The engine reads this file *once* at boot. It contains a hashmap of all known `plugins`, `skills`, and `mcp` servers.
 
 ### `RegistryEntry` Schema (Exhaustive)
 
@@ -42,16 +42,16 @@ The engine reads this file *once* at boot. It contains a hashmap of all known `e
 | `id` | `String` | Unique identifier generated at installation (e.g., `ext_cluaiz_search_12345`). |
 | `domain` | `String` | Relative path where the component lives (e.g., `core/cluaiz-db`). Used to locate the component folder instantly. |
 | `load_strategy` | `Enum` | `EAGER` (Load into RAM immediately), `LAZY` (Register events, load on demand), `MANUAL` (Only via CLI). |
-| `activation_events`| `Vec<String>` | Event patterns that trigger lazy loading (e.g., `"on_command:use extension::cluaiz-search"`). |
+| `activation_events`| `Vec<String>` | Event patterns that trigger lazy loading (e.g., `"on_command:use plugin::cluaiz-search"`). |
 | `enabled` | `bool` | If false, the engine ignores the component entirely. Default is `true`. |
 | `binary_hash` | `Option<String>`| SHA256 checksum to verify the binary wasn't tampered with. |
 | `semantic_index` | `Option<Vec<String>>` | Keyword triggers for the AI to instantly route requests. |
 
 ---
 
-## 4. The Component Manifest (`ExtensionManifest`)
-**Source of Truth File:** `manifest-extension.yaml` / `manifest-plugin.yaml` / `manifest-mcp.yaml` (inside the component's `storage_domain` folder)  
-**Code Location:** `extension_manager.rs`
+## 4. The Component Manifest (`PluginManifest`)
+**Source of Truth File:** `manifest-plugin.yaml` / `manifest-mcp.yaml` (inside the component's `storage_domain` folder)  
+**Code Location:** `plugin_manager.rs`
 
 This file defines *how* the component executes, its hardware limits, and its exact AI interface. It is lazily parsed only when the component is triggered.
 
@@ -71,10 +71,10 @@ This file defines *how* the component executes, its hardware limits, and its exa
 ### `ai_interface` Block (AI Routing Rules)
 | Keyword | Type | Description |
 |---|---|---|
-| `keywords` | `Vec<String>` | Semantic keywords that trigger this extension. |
+| `keywords` | `Vec<String>` | Semantic keywords that trigger this plugin. |
 | `cel_syntax` | `Option<String>`| The exact CEL syntax exposed to the AI model. |
 | `cel_returns` | `Option<String>`| JSON schema description of what the CEL call returns. |
-| `usage_example` | `Option<String>`| Human-readable example of how to invoke the extension. |
+| `usage_example` | `Option<String>`| Human-readable example of how to invoke the plugin. |
 
 ### `settings` and `system_bindings` Blocks (Dynamic Config Injection)
 | Keyword | Type | Description |
@@ -105,7 +105,7 @@ This file defines *how* the component executes, its hardware limits, and its exa
 | Keyword | Type | Description |
 |---|---|---|
 | `domain` | `String` | Modern standard for mapping the storage path. |
-| `cache_dir` | `String` | Sandboxed cache directory automatically created by `ExtensionManager`. Defaults to `.cache`. |
+| `cache_dir` | `String` | Sandboxed cache directory automatically created by `PluginManager`. Defaults to `.cache`. |
 | `data_dir` | `Option<String>`| Optional persistent data directory path. |
 
 ### Dynamic / Future Schemas
@@ -122,7 +122,7 @@ This file defines *how* the component executes, its hardware limits, and its exa
 > **Serialization Case-Sensitivity:** The `SandboxType` enum uses `#[serde(rename_all = "UPPERCASE")]`. You MUST write `NATIVE`, `WASM`, or `PROCESS` in all caps in the YAML file. Using CamelCase (e.g., `NativeDll`) will cause fatal deserialization panics.
 
 > [!WARNING]
-> **Memory Leaks in NATIVE FFI:** For `NATIVE` extensions, the host's `execute()` FFI bridge strictly expects the DLL to export `free_cel_response(*mut c_char)`. If you export a generic string freeing function (like `free_string`), the host engine will fail to find the symbol and cause memory leaks or segmentation faults.
+> **Memory Leaks in NATIVE FFI:** For `NATIVE` plugins, the host's `execute()` FFI bridge strictly expects the DLL to export `free_cel_response(*mut c_char)`. If you export a generic string freeing function (like `free_string`), the host engine will fail to find the symbol and cause memory leaks or segmentation faults.
 
 > [!IMPORTANT]
-> **The `entrypoint` Quirks:** Although `ffi_bindings.binary_path` exists, the `ExtensionManager::execute()` function currently heavily relies on the root-level `entrypoint` string to resolve `lib_path`. Ensure both are populated correctly for backward compatibility.
+> **The `entrypoint` Quirks:** Although `ffi_bindings.binary_path` exists, the `PluginManager::execute()` function currently relies on the root-level `entrypoint` string to resolve `lib_path`. Ensure both are populated correctly for backward compatibility.

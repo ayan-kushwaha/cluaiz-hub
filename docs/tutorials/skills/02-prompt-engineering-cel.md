@@ -19,20 +19,20 @@ In cluaiz, the AI interacts with the system using **CEL (cluaiz Execution Langua
 ### Bad Example (Vague)
 ```markdown
 # Bad Prompt
-If the user asks for their balance, fetch it from the database extension.
+If the user asks for their balance, fetch it from the database plugin.
 ```
 *Result:* The AI will hallucinate `SELECT balance FROM users;` which the Engine cannot parse.
 
 ### Good Example (Explicit Grammar)
 ```markdown
 # Good Prompt
-If the user asks for their balance, fetch it from the database extension using the following CEL command:
+If the user asks for their balance, fetch it from the database plugin using the following CEL command:
 
-`use extension::cluaiz-db-engine -> execute(query: "get_balance", user_id: "<DYNAMIC_ID>")`
+`use plugin::cluaiz-db -> execute(query: "get_balance", user_id: "<DYNAMIC_ID>")`
 
 Replace `<DYNAMIC_ID>` with the actual user ID. Wait for the engine to return the result before answering.
 ```
-*Result:* The AI outputs perfect CEL. The Engine's Router intercepts it, compiles the payload, invokes the C-Pointer for the database extension, and returns the balance directly into the AI's context.
+*Result:* The AI outputs perfect CEL. The Engine's Router intercepts it, compiles the payload, invokes the C-Pointer for the database plugin, and returns the balance directly into the AI's context.
 
 ## Handling Multiple Tools
 

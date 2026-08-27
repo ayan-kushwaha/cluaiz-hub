@@ -76,7 +76,7 @@ A skill is a directory placed inside `skills/<category>/<skill-name>/`.
 skills/<category>/<skill-name>/
 ├── SKILL.md                 # Required — Entry point with YAML frontmatter & core prompt
 ├── state.kvcache.bin        # Optional — Pre-computed KV cache (Persistent memory)
-├── manifest.json            # Optional — Legacy fallback for older extensions
+├── manifest.json            # Optional — Legacy fallback
 ├── scripts/                 # Optional — Dynamic execution logic (.rhai, .cell, .wasm, .yaml)
 ├── references/              # Optional — Static context documents for Engine RAG chunking
 └── .cache/                  # ⚠️ ENGINE AUTO-GENERATED (Do not manually create or commit)
@@ -87,7 +87,7 @@ skills/<category>/<skill-name>/
 
 ### The `scripts/` Directory (Execution Logic)
 Unlike simple LLMs, Cluaiz allows skills to execute strict programmatic logic. The engine natively supports multiple execution formats inside the `scripts/` folder:
-- **`.cell` (Cluaiz Execution Language):** The engine's native, highly-optimized internal logic format. Used to define extension plugins and tool behaviors.
+- **`.cell` (Cluaiz Execution Language):** The engine's native, highly-optimized internal logic format. Used to define tool and plugin behaviors.
 - **`.rhai` (Legacy):** Tier-4 execution architecture for backward compatibility.
 - **`AUTO_WASM` & `.wasm`:** For memory-safe sandboxed execution. The engine uses zero-copy FFI buffers to communicate with the WASM runtime.
 - **`.yaml` / `.json`:** For declarative tool chaining.
@@ -112,4 +112,4 @@ The Cluaiz Engine handles skills fundamentally differently from standard text pr
 
 > [!IMPORTANT]
 > **Manifest Fallback Priority**
-> The Engine's standard entry point is `SKILL.md` (which contains the YAML frontmatter). However, for backwards compatibility with legacy extension plugins, the registry scanner still supports `manifest-extension.yaml` and `manifest.json`. The resolution priority is: `SKILL.md` → `manifest-extension.yaml` → `manifest.yaml` → `manifest.json`.
+> The Engine's standard entry point is `SKILL.md` (which contains the YAML frontmatter). The resolution priority is: `SKILL.md` → `manifest-plugin.yaml` → `manifest.yaml` → `manifest.json`.

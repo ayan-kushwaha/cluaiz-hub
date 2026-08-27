@@ -1,21 +1,18 @@
 ---
 title: "Creating SKILL.md for Tools"
-description: "How to properly build a SKILL.md file to give AI the power to understand and use Extensions, Plugins, and MCPs."
+description: "How to properly build a SKILL.md file to give AI the power to understand and use Plugins and MCPs."
 category: "Tutorials"
 ---
 
 # 4. Creating `SKILL.md` for Your Tools
 
-> [!TIP]
-> **For full architectural details, reference:** [`skill_architecture.md`](file:///c:/Users/Aryan/my/Cluaiz-workspace/Cluaiz-Technologies/cluaiz-hub/docs/architecture/skill_architecture.md)
+When you build a new tool for cluaiz (whether it's a WASM/Native Plugin or an MCP Server), you are building **Muscle**. 
 
-When you build a new tool for cluaiz (whether it's an Extension, a WASM Plugin, or an MCP Server), you are building **Muscle**. 
-
-However, the AI does not automatically know how to use your tool. To give the AI power, context, and exact instructions, you must create a `SKILL.md` file.
+However, the AI does not automatically know how to use your tool. To give the AI power, context, and exact instructions, you can create a `SKILL.md` file.
 
 ### Requirement Levels
-- **Extensions:** Strict Requirement. You must write a `SKILL.md` to safely orchestrate raw OS access.
-- **Plugins & MCPs:** Optional, but highly recommended. Without it, the AI might guess the tool's usage and hallucinate parameters.
+- **Native Plugins:** Recommended. You can write a `SKILL.md` to safely guide query construction and parameters.
+- **WASM Plugins & MCPs:** Optional, but useful for complex schemas. Without it, the AI calls the tool based on manifest schemas.
 
 ---
 

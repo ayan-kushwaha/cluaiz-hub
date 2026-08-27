@@ -1,14 +1,14 @@
 # 🏛️ The Cluaiz Hub Architecture & Dynamic Build Pipeline
 
-This document serves as the **Single Source of Truth** for the Cluaiz Hub's Data-Driven CI/CD Pipeline and Package Architecture. It explains exactly how the registries work, how the Masterpiece `package.json` schema controls the build process, and provides a step-by-step guide for developers on how to create, build, and release extensions, plugins, skills, and MCP servers.
+This document serves as the **Single Source of Truth** for the Cluaiz Hub's Data-Driven CI/CD Pipeline and Package Architecture. It explains exactly how the registries work, how the `package.json` schema controls the build process, and provides a step-by-step guide for developers on how to create, build, and release plugins, skills, and MCP servers.
 
 ---
 
 ## 🧬 1. The Core Philosophy: Data-Driven CI/CD
 
-In the Cluaiz ecosystem, developers **never** manually compile binaries, create GitHub releases, or write custom workflow YAML files for their extensions. 
+In the Cluaiz ecosystem, developers **never** manually compile binaries, create GitHub releases, or write custom workflow YAML files for their packages. 
 
-The entire CI/CD pipeline is **Data-Driven**. There is a single Master Python Script (`hub-matrix-builder.py`) and a single Master YAML workflow. This system tracks `git diff`, reads the `package.json` of the modified extension, and dynamically spawns parallel build jobs (Windows, macOS, Linux, WASM) based entirely on the JSON configuration.
+The entire CI/CD pipeline is **Data-Driven**. There is a single Master Python Script (`hub-matrix-builder.py`) and a single Master YAML workflow. This system tracks `git diff`, reads the `package.json` of the modified package, and dynamically spawns parallel build jobs (Windows, macOS, Linux, WASM) based entirely on the JSON configuration.
 
 ---
 
@@ -23,7 +23,6 @@ Located at the root of `cluaiz-hub/`. It is the absolute entry point for the Clu
   "version": "1.0.0",
   "updated": "2026-06-30T10:00:00Z",
   "routing": {
-    "extensions": "extensions/family.json",
     "plugins": "plugins/family.json",
     "skills": "skills/family.json",
     "mcp": "mcp/family.json",
@@ -33,11 +32,11 @@ Located at the root of `cluaiz-hub/`. It is the absolute entry point for the Clu
 ```
 
 ### B. The Category Router (`family.json`)
-Located inside each category folder (e.g., `extensions/family.json`). It acts as a directory of all items within that family. The Engine parses this to find specific packages without scanning the entire repo.
+Located inside each category folder (e.g., `plugins/family.json`). It acts as a directory of all items within that family. The Engine parses this to find specific packages without scanning the entire repo.
 ```json
 {
-  "category": "extensions",
-  "description": "Deep OS-level integrations requiring native compiled binaries.",
+  "category": "plugins",
+  "description": "Execution tools requiring native compiled binaries or WASM sandboxes.",
   "items": {
     "cluaiz-search": "cluaiz-search/package.json",
     "cluaiz-database": "cluaiz-db/package.json",
@@ -58,27 +57,27 @@ This is the heart of the system. It dictates how the AI understands the tool and
 The `package.json` is the absolute heart of the Hub. It dictates how the AI understands the tool, how the Engine downloads it, and how the CI/CD pipeline builds it. Every key has a critical purpose.
 
 ### The Complete JSON Structure
-Here is a full example of a perfectly structured Extension package:
+Here is a full example of a structured Plugin package:
 
 ```json
 {
   "id": "cluaiz-search",
-  "name": "Cluaiz Search Extension",
+  "name": "Cluaiz Search Plugin",
   "title": "Cluaiz Search",
   "category": "search",
-  "hub_type": "extension", 
+  "hub_type": "plugin", 
   "build_type": "binary",
   "github_action": true,
   "logo": "/assets/cluaiz-search.webp",
   "title": "Cluaiz Local Search Indexer",
-  "description": "Powerful local search indexing extension for the Cluaiz Engine. Enables lightning-fast, privacy-first data retrieval and exact match indexing without internet dependency. Securely organizes your local workspace for real-time AI access.",
+  "description": "Powerful local search indexing plugin for the Cluaiz Engine. Enables fast, privacy-first data retrieval and exact match indexing. Securely organizes your local workspace for real-time AI access.",
   "tags": [
     "Search",
     "Inverted-Index",
     "Cross-platform",
     "Retrieval"
   ],
-  "documentation": "https://github.com/cluaiz/cluaiz-hub/blob/main/extensions/cluaiz-search/README.md",
+  "documentation": "https://github.com/cluaiz/cluaiz-hub/blob/main/plugins/cluaiz-search/README.md",
   "latest_version": "0.1.0",
   "versions": {
     "0.1.0": {
@@ -94,7 +93,7 @@ Here is a full example of a perfectly structured Extension package:
         "skill": "/SKILL.md",
         "scripts": "/scripts",
         "references": "/references",
-        "manifest": "/manifest-extension.yaml",
+        "manifest": "/manifest-plugin.yaml",
         "file_directory": "https://github.com/cluaiz/cluaiz-hub/releases/download/ext-cluaiz-search-v0.1.0/cluaiz-search-files.zip"
       }
     }
@@ -106,12 +105,11 @@ Here is a full example of a perfectly structured Extension package:
 
 #### Level 1: Ecosystem Identity & Typing
 - `id`, `name`, `title`: Unique identifiers used in the CLI and UI to display the package.
-- `logo`: A relative path (e.g. `"/assets/cluaiz-search.webp"`) that points to a local directory *inside* the package's folder (e.g., `extensions/cluaiz-search/assets/`). During the CI/CD build, this local `assets/` directory is automatically bundled into the Master ZIP, so the Engine extracts the logo locally without needing external CDNs.
+- `logo`: A relative path (e.g. `"/assets/cluaiz-search.webp"`) that points to a local directory *inside* the package's folder (e.g., `plugins/cluaiz-search/assets/`). During the CI/CD build, this local `assets/` directory is automatically bundled into the Master ZIP, so the Engine extracts the logo locally without needing external CDNs.
 - `github_action`: A boolean flag (`true` or `false`). If `false`, the CI/CD pipeline will completely ignore this package and skip all build jobs, even if files were modified. This provides a hard manual override at the top level to disable automated builds.
 - `hub_type` (What is this package?):
-  - `"extension"`: Deep OS integrations. Requires highly optimized binaries (`.dll`, `.so`) and always requires a `SKILL.md` to teach the AI how to use it safely.
-  - `"plugin"`: Independent modular tools. Can be compiled to WASM or Native. `SKILL.md` is optional but recommended.
-  - `"skill"`: Pure Prompt Engineering. Contains no executable code. Relies entirely on `SKILL.md` and reference text files.
+  - `"plugin"`: Modular execution tools. Can be compiled to WASM or Native C-FFI. `SKILL.md` is optional but recommended.
+  - `"skill"`: Prompt Engineering. Relies entirely on `SKILL.md` and reference text files.
   - `"mcp"`: Model Context Protocol servers. Usually Python or Node.js scripts bundled with a `SKILL.md`.
 - `build_type` (How should the CI/CD compile this?):
   - `"binary"`: The pipeline triggers native compilers (C++/Rust) across a dynamic OS matrix (Windows, Linux, macOS).
@@ -136,7 +134,7 @@ The `versions` object gives developers explicit control over every historical ve
 
 ### The Brain (`SKILL.md`)
 If a package contains a `SKILL.md`, it is the **Identity and Instruction Manual** for the AI. It uses strict YAML frontmatter and precise CEL (Cluaiz Execution Language) grammar to prevent hallucinations.
-- When an extension is loaded, the `.dll` goes to the OS, but the `SKILL.md` goes directly into the AI's prompt.
+- When a plugin is loaded, the `.dll` or `.wasm` goes to the execution sandbox, while the `SKILL.md` goes directly into the AI's prompt.
 
 ### The Memory (`references/` & `scripts/`)
 For massive skills (e.g., Code Reviewers), putting 10,000 lines of documentation inside `SKILL.md` causes context window bloat and OOM crashes.
@@ -151,7 +149,7 @@ For massive skills (e.g., Code Reviewers), putting 10,000 lines of documentation
 The `master-hub-builder.yml` and `hub-matrix-builder.py` operate in 4 distinct phases:
 
 ### Phase 1: Git Diff Detection
-When a developer pushes to `main`, the Python script runs `git diff HEAD^ HEAD`. It detects exactly which folders (e.g., `extensions/cluaiz-search`) were modified.
+When a developer pushes to `main`, the Python script runs `git diff HEAD^ HEAD`. It detects exactly which folders (e.g., `plugins/cluaiz-search`) were modified.
 
 ### Phase 2: Matrix Generation
 For every modified package, the script reads `package.json`. 
@@ -173,30 +171,30 @@ This ensures we don't spam the repository with 20,000 unique releases.
 
 ---
 
-## 🛠️ 6. Developer Guideline: How to Build & Release a New Extension
+## 🛠️ 6. Developer Guideline: How to Build & Release a New Plugin
 
 If you want to contribute a new tool to the Cluaiz Ecosystem, follow these exact steps:
 
 ### Step 1: Create the Structure
-Create your folder in the correct category: `extensions/my-new-tool/`.
+Create your folder in the correct category: `plugins/my-new-tool/`.
 Inside, create the standard files:
 - `README.md` (Human documentation)
 - `SKILL.md` (AI instructions)
 - `src/` (Your C++/Rust/Python code)
 
 ### Step 2: Write the `package.json`
-Copy the "Masterpiece" schema. 
-- Set your `hub_type` (extension, plugin, skill).
+Copy the schema. 
+- Set your `hub_type` (plugin, skill, mcp).
 - Set your `build_type` (binary, wasm, none).
 - Ensure your `files` block points to `/SKILL.md`.
 
-### Step 3: Trigger the Build (Zero Maintenance)
+### Step 3: Trigger the Build (Automated)
 You do **not** need to compile anything yourself. 
 You do **not** need to touch `.github/workflows`.
 1. Commit your changes.
 2. Push to the `main` branch.
 
-### Step 4: Watch the Magic
+### Step 4: Verification
 The Dynamic Pipeline will detect your new folder, read your `build_type`, automatically spawn the necessary virtual machines, compile your code, ZIP your `SKILL.md`, and upload everything to the exact URLs you specified in your `package.json`.
 
 ---

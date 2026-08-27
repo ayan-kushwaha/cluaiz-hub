@@ -59,14 +59,14 @@ struct CelPayload {
 pub enum PayloadType { Json, Cdql, WasmBinary, RawBytes, Bincode, MsgPack }
 
 #[repr(C)]
-pub struct ExtensionPayload {
+pub struct CxpPayload {
     pub payload_type: PayloadType,
     pub data_ptr: *const u8,
     pub data_len: usize,
 }
 
 #[no_mangle]
-pub extern "C" fn cluaiz_entry(payload_ptr: *const ExtensionPayload) -> *mut c_char {
+pub extern "C" fn cluaiz_entry(payload_ptr: *const CxpPayload) -> *mut c_char {
     if payload_ptr.is_null() {
         return std::ptr::null_mut();
     }

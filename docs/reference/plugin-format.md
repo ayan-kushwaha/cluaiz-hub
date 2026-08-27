@@ -15,6 +15,13 @@ Optional:
 - API schema files
 - Helper scripts
 
+### Assets (MANDATORY)
+
+Every plugin **MUST** have an `assets` folder containing a valid `icon.svg` file (`assets/icon.svg`). 
+- Only pure SVG is accepted (no `.png`, `.jpg`, `.webp`).
+- This SVG icon is directly fetched by the Cluaiz UI and rendered inline for a premium, native look.
+- The `icon.svg` must be a valid, standalone SVG document (`<svg>...</svg>`).
+
 ## How plugins differ from skills
 
 Skills teach the agent *new behaviors* using local assets (WASM, KV-Cache).

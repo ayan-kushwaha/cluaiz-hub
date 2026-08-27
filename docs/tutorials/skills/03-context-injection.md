@@ -44,9 +44,9 @@ To take advantage of this architecture, you must write granular skills.
 
 ## Step 2: The JIT Injection (`mid_layer_jit_injection`)
 
-If your skill orchestrates a powerful Extension that generates massive amounts of data (like a database returning 50,000 rows), feeding that into the LLM context will instantly cause an Out-Of-Memory (OOM) crash.
+If your skill orchestrates a powerful Plugin that generates massive amounts of data (like a database returning 50,000 rows), feeding that into the LLM context will instantly cause an Out-Of-Memory (OOM) crash.
 
-To handle this, Extensions can use `mid_layer_jit_injection: true`. 
-When the extension executes, instead of returning the 50,000 rows to the LLM, the Extension injects a **new, temporary skill** (a summarization prompt) directly into the Mid-Layer. The engine runs a sub-inference on the data in chunks, and only returns the final summary to the primary LLM session.
+To handle this, Plugins can use `mid_layer_jit_injection: true`. 
+When the plugin executes, instead of returning the 50,000 rows to the LLM, the Plugin injects a **new, temporary skill** (a summarization prompt) directly into the Mid-Layer. The engine runs a sub-inference on the data in chunks, and only returns the final summary to the primary LLM session.
 
 By structuring your Skills carefully, you ensure the Engine remains lightning-fast and VRAM-efficient.

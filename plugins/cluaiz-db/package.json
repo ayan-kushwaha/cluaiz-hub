@@ -1,0 +1,39 @@
+{
+  "id": "cluaiz-db",
+  "name": "Cluaiz Database Engine",
+  "category": "database",
+  "hub_type": "plugin",
+  "build_type": "binary",
+  "github_action": true,
+  "logo": "/assets/cluaiz-db.webp",
+  "title": "Cluaiz Core Database Engine Plugin",
+  "description": "High-performance native database plugin with CDQL syntax and in-memory vector storage.",
+  "tags": [
+    "Database",
+    "CDQL",
+    "Storage",
+    "Vector"
+  ],
+  "latest_version": "1.0.0",
+  "versions": {
+    "1.0.0": {
+      "updated_at": "2026-07-01T15:59:00Z",
+      "builds_os": [
+        "windows",
+        "macos",
+        "linux"
+      ],
+      "changelog": "Initial stable release of Cluaiz Database Plugin.",
+      "os": {
+        "windows": "https://github.com/cluaiz/cluaiz-hub/releases/download/v1.0.0/cluaiz-db_windows_x64.dll",
+        "macos": "https://github.com/cluaiz/cluaiz-hub/releases/download/v1.0.0/libcluaiz-db_macos_arm64.dylib",
+        "linux": "https://github.com/cluaiz/cluaiz-hub/releases/download/v1.0.0/libcluaiz-db_linux_x64.so"
+      },
+      "files": {
+        "skill": "/SKILL.md",
+        "manifest": "/manifest-plugin.yaml",
+        "file_directory": "https://github.com/cluaiz/cluaiz-hub/releases/download/v1.0.0/cluaiz-db-files.zip"
+      }
+    }
+  }
+}

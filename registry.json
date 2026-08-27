@@ -1,7 +1,6 @@
 {
   "version": "0.1.0",
   "routing": {
-    "extensions": "extensions/family.json",
     "plugins": "plugins/family.json",
     "skills": "skills/family.json",
     "mcp": "mcp/family.json",

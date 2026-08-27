@@ -8,7 +8,7 @@ category: "Tutorials"
 
 The **Model Context Protocol (MCP)** is a standardized way for AI models to securely connect to external data sources and tools (e.g., GitHub, Slack, local file systems).
 
-Unlike Extensions (Native DLLs) or Plugins (WASM) which run within the cluaiz Engine memory space, MCP servers are **separate processes** (e.g., Node.js or Python scripts).
+Unlike in-memory Plugins (Native C-FFI or WASM) which run directly within the cluaiz Engine execution pipeline, MCP servers are **separate processes** (e.g., Node.js or Python scripts).
 
 > [!TIP]
 > **For more details, reference:** [`skill_architecture.md`](file:///c:/Users/Aryan/my/Cluaiz-workspace/Cluaiz-Technologies/cluaiz-hub/docs/architecture/skill_architecture.md)

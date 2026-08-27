@@ -1,6 +1,6 @@
 # Cluaiz Skills & Plugins
 
-Cluaiz Skills and Plugins are the extension layer for the Cluaiz Independent OS.
+Cluaiz Skills, Plugins, and MCP connectors are the ecosystem layer for the Cluaiz Engine.
 They teach the Independent Agent new capabilities — from running storage diagnostics
 to generating PDFs to managing GitHub repositories — all while enforcing strict
 zero-trust security at the hardware level.

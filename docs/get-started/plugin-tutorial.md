@@ -11,18 +11,18 @@ By the end of this tutorial, you will have successfully loaded the `cluaiz-searc
 ---
 
 ## Step 1: Install the Plugin
-First, we need to download the plugin into the engine's registry. Use the CLI to install the `cluaiz-search` extension.
+First, we need to download the plugin into the engine's registry. Use the CLI to install the `cluaiz-search` plugin.
 
 ```bash
-cluaiz extension install cluaiz-search
+cluaiz plugin install cluaiz-search
 ```
-The engine will download the plugin and automatically place it in its required `storage_domain` (e.g., `~/.cluaiz/extensions/cluaiz-search`). It also registers it in the master `registry.yaml` as a Lazy-loaded component.
+The engine will download the plugin and automatically place it in its required `storage_domain` (e.g., `~/.cluaiz/plugins/cluaiz-search`). It also registers it in the master `registry.yaml` as a Lazy-loaded component.
 
 ## Step 2: Verify Installation
 Verify that the plugin is recognized by the engine:
 
 ```bash
-cluaiz extension list
+cluaiz plugin list
 ```
 You should see `cluaiz-search` listed with its status as `enabled: true`.
 
@@ -36,14 +36,14 @@ cluaiz chat "What is the latest stable version of Rust?"
 
 Behind the scenes, the AI engine will:
 1. Detect that your prompt requires web access.
-2. Emit the CEL (cluaiz Expression Language) command defined in the plugin's manifest: `use extension::cluaiz-search -> query(q: 'latest stable version of Rust')`.
+2. Emit the CEL (cluaiz Expression Language) command defined in the plugin's manifest: `use plugin::cluaiz-search -> query(q: 'latest stable version of Rust')`.
 3. The engine parses this CEL command, instantly loads the plugin's binary into RAM, executes the native FFI call, and injects the results back into your chat context window.
 
 ## Step 4: Direct CEL Execution (Advanced)
 If you are writing scripts or testing the engine without the AI router, you can execute the CEL command directly using the CLI:
 
 ```bash
-cluaiz run "use extension::cluaiz-search -> query(q: 'latest stable version of Rust')"
+cluaiz run "use plugin::cluaiz-search -> query(q: 'latest stable version of Rust')"
 ```
 
 ## Summary

@@ -1,18 +1,24 @@
-# 🔌 cluaiz Hub: Plugins
+# 🔌 Cluaiz Hub: Plugins (Unified Tool Ecosystem)
 
-Welcome to the **Plugins** directory of the cluaiz Hub.
+Welcome to the **Plugins** directory of the Cluaiz Hub.
 
 ## What is a Plugin?
-A Plugin represents **"The Functional Muscle"** of the cluaiz Ecosystem. 
+A Plugin represents the execution layer of the Cluaiz Ecosystem. It encompasses both:
+1. **Sandboxed Tools (`WASM`):** Lightweight, fully isolated WebAssembly binaries executing with strict CPU fuel limits and RAM caps.
+2. **Native C-FFI Plugins (`NATIVE`):** High-performance bare-metal C-FFI binaries (`.dll`, `.so`, `.dylib`) for deep hardware, VRAM, and database subsystems.
 
-Plugins are standalone, compiled third-party binaries (`.dll`, `.wasm`, `.so`) that give the Engine specific hardware, network, or OS-level capabilities that it otherwise wouldn't have.
+## Anatomy of a Plugin
+Every folder in this directory follows this standard structure:
+```text
+cluaiz-search/               <-- Plugin Name
+├── manifest-plugin.yaml     <-- Capabilities, envelope (WASM/NATIVE), memory limits, and permissions
+├── SKILL.md                 <-- [Optional Brain] Teaches the AI how and when to use this plugin
+├── package.json             <-- Versioning, OS binaries, and metadata
+└── src/ (or native/)        <-- Source code (Rust/C++)
+```
 
-### Key Characteristics
-1. **No Brains:** Plugins do NOT contain a `SKILL.md`. They do not teach the AI how to use them.
-2. **Pure Execution:** They simply accept a payload via the CXP (cluaiz Extension Protocol) C-FFI boundary, execute it at bare-metal speeds, and return the pointer.
-3. **Triggered by Skills/Extensions:** A Plugin is usually invoked by an AI that has been trained by a separate Skill or Extension.
-
-### When to use a Plugin?
-If you are writing a pure, highly-optimized algorithm (like an image-processing function or a web scraper) that doesn't need to inject custom context into the LLM, it belongs here.
-
-> **Rule of Thumb:** If your module is just a bare-metal `.dll` or `.wasm` binary meant to be executed blindly by the engine, it belongs in `plugins`. If it also requires teaching the AI custom syntax, it belongs in `Extensions`.
+## How It Works
+1. When installed (`cluaiz plugin install <name>`), the Engine downloads and places the package into `~/.cluaiz/plugins/<name>`.
+2. If `SKILL.md` is present, the Engine injects the tool prompt into the AI's context.
+3. The AI outputs a CEL query (e.g., `use plugin::cluaiz-search { "query": "..." }`).
+4. The Engine executes the plugin in its declared envelope (`WASM` sandbox or `NATIVE` C-FFI) with sub-millisecond latency.

@@ -5,7 +5,7 @@
 <h1 align="center">Cluaiz Hub</h1>
 
 <p align="center">
-  <strong>The Official Central Registry for Cluaiz Extensions, Plugins, Skills, Souls, & MCP.</strong>
+  <strong>The Official Central Registry for Cluaiz Plugins, Skills, Souls, & MCP.</strong>
 </p>
 
 <p align="center">
@@ -17,105 +17,65 @@
 
 ## 🌟 What is this?
 
-This repository (**cluaiz Hub**) is the central nervous system for the cluaiz Inference Engine. It contains everything needed to extend the core engine's capabilities, give the AI new knowledge, and define agent personas.
-
-The cluaiz architecture enforces a strict decoupling of logic from the Core Engine. The engine itself is a "dumb router"; all actual capabilities live here in this Hub.
+This repository (**Cluaiz Hub**) is the central registry for the Cluaiz Inference Engine. It contains everything needed to extend the core engine's capabilities, give the AI new knowledge, and execute high-performance tools.
 
 ---
 
-## 🏗️ The 5 Pillars of cluaiz Ecosystem
+## 🏗️ Core Pillars of the Cluaiz Ecosystem
 
-To understand how to build and contribute, you must understand the strict cluaiz Taxonomy.
+### 1. 🔌 Plugins (The Execution Muscle)
+A **Plugin** provides direct in-memory execution power. Plugins can be compiled as:
+- **WASM Micro-Tools (`WASM`):** Fully isolated with strict CPU fuel limits and RAM caps.
+- **Native Plugins (`NATIVE`):** Bare-metal C-FFI binaries (`.dll`, `.so`, `.dylib`) for deep VRAM access, database storage, and high-speed web retrieval.
+- **Example:** `cluaiz-search` (Live web metasearch), `cluaiz-db` (Neural database), `cluaiz-math` (WASM calculator).
 
-### 1. 🧩 Extensions (The Brain + Muscle Bundle)
-An **Extension** extends the entire system's behavior. It is a bundle that combines the Brain (instructions) and the Muscle (native code).
-- **Example:** `cluaiz-database` (cluaizd). It contains a `SKILL.md` (to teach the AI how to write database queries) AND the native `cluaizd_engine.dll` (to actually execute them).
+### 2. 🧠 Skills (The AI Instructions)
+A **Skill** is pure workflow and context formatting (`SKILL.md`). It teaches the AI *how* and *when* to reason and call tools without containing binary code.
+- **Example:** `frontend-dev` (Guides code generation conventions).
 
-### 2. 🔌 Plugins (The Functional Muscle)
-A **Plugin** is a standalone, compiled third-party binary (`.dll`, `.wasm`, `.so`) that gives the engine a specific hardware or OS-level capability.
-- **Example:** A heavy image-processing algorithm or a native web scraper. The engine loads this into memory and passes execution pointers to it.
-
-### 3. 🧠 Skills (The AI Recipes)
-A **Skill** is pure workflow and logic formatting (Markdown/CEL). It does not contain executable binaries. It teaches the AI *how* to use existing plugins or APIs.
-- **Example:** A "Summarize Document" skill that instructs the AI on the exact format to return. It uses a `SKILL.md` file.
-
-### 4. 👤 Souls (Personas)
-A **Soul** defines an AI agent's core identity, constraints, and bundles specific Skills together.
-- **Example:** `Senior_Rust_Developer` soul. It is bundled with the "Cargo Build" skill and the "Terminal" plugin, but restricted from accessing the "Medical Database".
-
-### 5. 🌐 MCP (Model Context Protocol)
-External standard connectors. If a tool runs on a completely different server (like Slack or GitHub), an MCP connector bridges it to the cluaiz Engine.
-
+### 3. 🌐 MCP (Model Context Protocol)
+Open standard external tools. Bridges external subprocesses (such as GitHub, PostgreSQL, or Brave Search) to the Cluaiz Engine over standardized JSON-RPC stdio/HTTP transports.
 
 ---
 
-## 🔄 End-to-End Core Mechanism (How it works)
+## 🔄 End-to-End Execution Flow
 
 ```mermaid
 graph TD
-    U["User Prompt"] --> S["Soul (Persona)"]
+    U["User Prompt"] --> LLM["LLM Inference Engine"]
     
-    subgraph Hub["cluaiz Hub (Registry)"]
+    subgraph Hub["Cluaiz Hub Registry"]
         SK["Skills (SKILL.md)"]
-        EX["Extensions (Brain + Muscle)"]
+        PL["Plugins (WASM / Native)"]
+        MCP["MCP Connectors"]
     end
     
-    S -->|Bundles| SK
-    S -->|Bundles| EX
+    SK -->|Injects Context| LLM
+    LLM -->|Outputs CEL / Function Call| ER["Engine Router"]
     
-    SK -->|Injects Instructions| LLM["LLM Inference"]
-    EX -->|Injects Instructions| LLM
+    ER -->|WASM Sandbox / Native C-FFI| PL
+    ER -->|Standard JSON-RPC| MCP
     
-    LLM -->|Outputs CEL Query| ER["Core Engine (CEL Router)"]
-    
-    subgraph Execution["Execution Layer"]
-        PL["Plugins / Muscle (.dll/.wasm)"]
-        MCP["MCP (External Tools)"]
-    end
-    
-    ER -->|Loads Native| PL
-    ER -->|Network Call| MCP
-    
-    PL -->|Returns CXP Pointer| ER
+    PL -->|Returns Result Pointer| ER
     MCP -->|Returns JSON| ER
     
-    ER -->|Injects Context| LLM
+    ER -->|KV-Cache Prefix Injection| LLM
     LLM -->|Final Output| U
-    
-    style ER fill:#005577,color:#fff,stroke:#00aaff,stroke-width:2px
-    style EX fill:#552277,color:#fff,stroke:#aa55ff,stroke-width:2px
-    style PL fill:#772222,color:#fff,stroke:#ff5555,stroke-width:2px
 ```
-
-When the user queries the Engine, here is how an **Extension** (like the Database) flows:
-
-1. **Extension Load:** The Engine reads the `cluaiz-database` extension and injects the `SKILL.md` into the AI's context window.
-2. **AI Inference:** The AI reads the instructions and outputs a CEL Query: `use plugin::database -> find User`.
-3. **Engine Routing:** The Engine intercepts the CEL string, realizes it needs the database, and loads the Muscle (`native/cluaizd_engine.dll`).
-4. **Native Execution:** The Engine executes the DLL at 0.05ms latency via C-FFI and passes the resulting memory pointer back to the AI context.
 
 ---
 
 ## 🚀 Quick Start (CLI)
 
-You can install any module from the Hub directly via the cluaiz CLI:
+Install any module from the Hub directly via the Cluaiz CLI:
 
 ```bash
-# Install an entire Extension
-cluaiz install extension cluaiz-database
+# Install a Plugin (WASM or Native)
+cluaiz plugin install cluaiz-search
 
 # Install a standalone Skill
-cluaiz install skill doc-summarizer
+cluaiz skill install frontend-dev
 
-# Apply a Soul to an Agent
-cluaiz soul set Senior_Rust_Developer
+# Install an MCP Server
+cluaiz mcp install github
 ```
-
-## 📜 Documentation
-
-- [Contributing Guidelines](CONTRIBUTING.md)
-- [Security Policy](SECURITY.md)
-- [Ecosystem Vision](VISION.md)
-
-## ⚖️ License
-[Apache 2.0](LICENSE) © 2026 Cluaiz Technologies

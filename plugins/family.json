@@ -1,5 +1,9 @@
 {
   "category": "plugins",
   "name": "Cluaiz Plugins",
-  "items": {}
+  "items": {
+    "cluaiz-search": "cluaiz-search/package.json",
+    "cluaiz-db": "cluaiz-db/package.json",
+    "cluaiz-math": "cluaiz-math/package.json"
+  }
 }

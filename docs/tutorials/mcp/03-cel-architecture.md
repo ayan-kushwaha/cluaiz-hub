@@ -6,7 +6,7 @@ category: "Tutorials"
 
 # 3. CEL Architecture for MCP Servers
 
-Like Plugins and Extensions, MCP Servers **do not parse CEL.** They only speak standard JSON-RPC over `stdio`. The Engine acts as the universal translator between the AI's CEL script and the MCP protocol.
+Like Plugins, MCP Servers **do not parse CEL.** They only speak standard JSON-RPC over `stdio`. The Engine acts as the universal translator between the AI's CEL script and the MCP protocol.
 
 ## How The AI Evaluates an MCP Tool
 

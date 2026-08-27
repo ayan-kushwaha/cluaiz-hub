@@ -13,6 +13,13 @@ Optional:
 - Any supporting files: `logic.wasm`, `state.kvcache.bin`, config JSONs, scripts,
   reference docs, templates.
 
+### Assets (MANDATORY)
+
+Every skill **MUST** have an `assets` folder containing a valid `icon.svg` file (`assets/icon.svg`). 
+- Only pure SVG is accepted (no `.png`, `.jpg`, `.webp`).
+- This SVG icon is directly fetched by the Cluaiz UI and rendered inline for a premium, native look.
+- The `icon.svg` must be a valid, standalone SVG document (`<svg>...</svg>`).
+
 Installed skill metadata (written by the CLI):
 
 - `<skill>/.cluaiz/origin.json`

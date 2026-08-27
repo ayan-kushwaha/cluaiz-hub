@@ -22,7 +22,7 @@ The best practice is to extract your logic into a pure function and test that na
 use serde_json::json;
 use rmp_serde::Serializer;
 use serde::Serialize;
-use math_plugin::{PayloadType, ExtensionPayload, cluaiz_entry};
+use math_plugin::{PayloadType, CxpPayload, cluaiz_entry};
 
 #[test]
 fn test_plugin_logic_via_msgpack() {
@@ -37,7 +37,7 @@ fn test_plugin_logic_via_msgpack() {
     payload_json.serialize(&mut Serializer::new(&mut msgpack_buf)).unwrap();
 
     // 3. Construct the FFI Struct
-    let ext_payload = ExtensionPayload {
+    let ext_payload = CxpPayload {
         payload_type: PayloadType::MsgPack,
         data_ptr: msgpack_buf.as_ptr(),
         data_len: msgpack_buf.len(),

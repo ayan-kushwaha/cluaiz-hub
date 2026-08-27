@@ -6,9 +6,7 @@ category: "Tutorials"
 
 # 1. Build Your First Plugin (WASM / C++)
 
-In the cluaiz ecosystem, a **Plugin** is distinct from an Extension. While Extensions are Native DLLs providing raw OS access, Plugins are **Compiled WebAssembly (WASM)** modules (`type: plugin`). 
-
-Plugins run entirely within the Engine's WASM sandbox. They are meant for "pure muscle" tasks (e.g., fast math, text parsing) and have absolutely no AI prompt or "brain" attached.
+In the cluaiz ecosystem, a **WASM Plugin** provides secure, sandboxed execution (`type: plugin`). Plugins run entirely within the Engine's WASM sandbox with strict CPU fuel limits and RAM caps.
 
 > [!TIP]
 > **For more details, reference:** [`skill_architecture.md`](file:///c:/Users/Aryan/my/Cluaiz-workspace/Cluaiz-Technologies/cluaiz-hub/docs/architecture/skill_architecture.md)
@@ -22,7 +20,7 @@ Plugins run entirely within the Engine's WASM sandbox. They are meant for "pure 
 ```mermaid
 flowchart TD
     A["cluaiz Engine"] -->|CEL Router Identifies Plugin| B{"Wasmtime VM"}
-    B -->|Compiles ExtensionPayload (MsgPack)| C["Compiled Plugin (.wasm)"]
+    B -->|Compiles CxpPayload (MsgPack)| C["Compiled Plugin (.wasm)"]
     C -->|Executes Sandbox Logic| B
     B -->|Returns CString| A
 ```
@@ -98,7 +96,7 @@ rmp-serde = "1.1" # For MsgPack parsing
 
 ## Step 3: The Code (MsgPack via C-Pointer)
 
-Inside `src/lib.rs`, expose the `cluaiz_entry` function. Unlike basic strings, the Engine passes a structured `ExtensionPayload` pointer containing the `MsgPack` serialized data.
+Inside `src/lib.rs`, expose the `cluaiz_entry` function. Unlike basic strings, the Engine passes a structured `CxpPayload` pointer containing the `MsgPack` serialized data.
 
 ```rust
 use std::ffi::{c_char, CString};
@@ -108,14 +106,14 @@ use std::ffi::{c_char, CString};
 pub enum PayloadType { Json, Cdql, WasmBinary, RawBytes, Bincode, MsgPack }
 
 #[repr(C)]
-pub struct ExtensionPayload {
+pub struct CxpPayload {
     pub payload_type: PayloadType,
     pub data_ptr: *const u8,
     pub data_len: usize,
 }
 
 #[no_mangle]
-pub extern "C" fn cluaiz_entry(payload_ptr: *const ExtensionPayload) -> *mut c_char {
+pub extern "C" fn cluaiz_entry(payload_ptr: *const CxpPayload) -> *mut c_char {
     if payload_ptr.is_null() {
         return std::ptr::null_mut();
     }

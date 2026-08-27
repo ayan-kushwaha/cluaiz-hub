@@ -58,7 +58,7 @@
     "title": "🛠️ Tools Tutorials",
     "groups": [
       {
-        "group": "Extensions",
+        "group": "Plugins",
         "pages": [
           { "slug": "cluaiz-db", "title": "💾 cluaiz-db", "file_path": "docs/tools/cluaiz-db.md" },
           { "slug": "cluaiz-search", "title": "🔍 cluaiz-search", "file_path": "docs/tools/cluaiz-search.md" }

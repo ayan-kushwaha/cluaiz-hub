@@ -6,7 +6,7 @@ category: "Tutorials"
 
 # 1. Create Your First AI Skill
 
-In cluaiz, **Skills** represent the "Brain" of the operation. While Extensions, Plugins, and MCPs provide the raw computational muscle, a Skill provides the neural context and step-by-step instructions (prompts) to tell the AI *how* and *when* to use those muscles.
+In cluaiz, **Skills** represent the "Brain" of the operation. While Plugins and MCPs provide the raw computational muscle, a Skill provides the neural context and step-by-step instructions (prompts) to tell the AI *how* and *when* to use those muscles.
 
 ---
 
@@ -19,7 +19,7 @@ flowchart TD
     A["User Input: 'Search for X'"] -->|Semantic Matching| B{"Skill Router"}
     B -->|Matches Trigger| C["Skill Prompt Injection"]
     C -->|AI Reasons via Context| D["Generates CEL Script"]
-    D -->|Executes Tool| E["Extension / Plugin / MCP"]
+    D -->|Executes Tool| E["Plugin / MCP"]
 ```
 
 ## Step 1: The Skill Manifest
@@ -32,7 +32,7 @@ Create a `manifest-skill.yaml`. This file tells the engine what capabilities the
 # =====================================================================
 name: "research-assistant"
 version: "1.0.0"
-description: "Equips the AI with the ability to perform deep web research using the search extension."
+description: "Equips the AI with the ability to perform deep web research using the search plugin."
 author: "Cluaiz Engineers"
 type: "skill"
 
@@ -41,8 +41,8 @@ discovery:
   semantic_triggers: ["research", "search the web", "look up"]
   
 dependencies:
-  # This skill requires the search extension to be loaded in order to function
-  extensions:
+  # This skill requires the search plugin to be loaded in order to function
+  plugins:
     - "cluaiz-search"
 ```
 
@@ -58,13 +58,13 @@ When the user triggers the skill, the Engine dynamically injects the contents of
 You are an expert researcher. When the user asks you to find information, you MUST adhere to the following protocol:
 
 1. **Analyze the Request:** Break down the user's query into 2-3 core search terms.
-2. **Execute the Search:** Use the `cluaiz-search` extension to fetch data.
+2. **Execute the Search:** Use the `cluaiz-search` plugin to fetch data.
 3. **Synthesize:** Once the engine returns the result, summarize it concisely in bullet points.
 4. **Cite Sources:** Always append the URLs provided in the search result payload.
 
 > [!WARNING]
-> Do NOT hallucinate answers. If the search extension returns an error or no results, you must inform the user exactly what failed.
+> Do NOT hallucinate answers. If the search plugin returns an error or no results, you must inform the user exactly what failed.
 ```
 
 > [!NOTE]
-> The AI is smart, but it doesn't automatically know *how* to call the `cluaiz-search` extension. Proceed to **Part 2: Prompt Engineering with CEL** to learn how to teach the AI the correct grammar.
+> The AI is smart, but it doesn't automatically know *how* to call the `cluaiz-search` plugin. Proceed to **Part 2: Prompt Engineering with CEL** to learn how to teach the AI the correct grammar.
