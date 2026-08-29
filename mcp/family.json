@@ -1,5 +1,11 @@
 {
   "category": "mcp",
   "name": "Cluaiz MCPs",
-  "items": {}
+  "items": {
+    "everything": "everything/package.json",
+    "filesystem": "filesystem/package.json",
+    "git": "git/package.json",
+    "fetch": "fetch/package.json",
+    "context7": "context7/package.json"
+  }
 }

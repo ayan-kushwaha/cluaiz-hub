@@ -1,0 +1,75 @@
+# =====================================================================
+# cluaiz SKILL MANIFEST (manifest-skill.yaml)
+#
+# PURPOSE: Configures a "Skill" which is the cognitive brain of the system.
+# A skill injects structured prompt instructions (SKILL.md) into the LLM context.
+# =====================================================================
+
+# [FIXED SCHEMA] The exact unique name of this skill in the ecosystem.
+# Dynamic Value Example: "code-reviewer", "tdd-workflow", "tool-creator"
+name: "code-reviewer"
+
+# [FIXED SCHEMA] Semantic versioning for updates.
+version: "1.0.0"
+
+# [FIXED SCHEMA] Short human-readable description.
+description: "Strict multi-language code quality, security vulnerability, memory safety, and DRY enforcement protocol."
+
+# [FIXED SCHEMA] Name of the creator or organization.
+author: "Aryan"
+
+# [FIXED SCHEMA] Must be exactly "skill" to tell Engine how to route this.
+type: "skill"
+
+# ---------------------------------------------------------------------
+# NEW SCHEMA (Used by SkillRouter - JIT Context Injection)
+# ---------------------------------------------------------------------
+discovery:
+  # [FIXED SCHEMA] Semantic keyword phrases that trigger this skill during inference.
+  semantic_triggers:
+    - "review this code"
+    - "audit security"
+    - "check bugs"
+    - "code quality audit"
+    - "dry check"
+    - "audit code"
+  
+  # [OPTIONAL] Entropy threshold for embedding router (0.0 to 1.0)
+  entropy_threshold: 0.7
+
+# ---------------------------------------------------------------------
+# DEPENDENCY BINDINGS
+# Tells the engine which Plugins (muscle) or MCPs this skill orchestrates.
+# ---------------------------------------------------------------------
+dependencies:
+  plugins:
+    - "text"
+  mcp:
+    - "git"
+
+# ---------------------------------------------------------------------
+# PERMISSIONS & CONTEXT ACCESS
+# ---------------------------------------------------------------------
+permissions:
+  # [FIXED SCHEMA] Does this skill instruct the model to inspect workspace files?
+  filesystem: true
+  
+  # [FIXED SCHEMA] Does this skill require internet or external services?
+  network: false
+  
+  # [FIXED SCHEMA] Access level constraint: "ReadOnly", "ReadWrite", or "None"
+  level: "ReadOnly"
+  
+  # [FIXED SCHEMA] Allowed MCP server IDs
+  mcp_servers:
+    - "git"
+
+# ---------------------------------------------------------------------
+# EXECUTION & TURN LIFECYCLE
+# ---------------------------------------------------------------------
+execution:
+  # [FIXED SCHEMA] Execution mode: "auto" (keyword triggered) or "manual" (user pinned).
+  execution_mode: "auto"
+  
+  # [FIXED SCHEMA] Number of session turns this skill remains active in KV-Cache.
+  default_turns: 2

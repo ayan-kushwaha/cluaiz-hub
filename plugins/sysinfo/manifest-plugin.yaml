@@ -1,0 +1,21 @@
+name: sysinfo
+version: 1.0.0
+description: Real-time cross-platform hardware telemetry and resource utilization engine
+category: plugin
+execution_mode: auto
+default_turns: 1
+discovery:
+  semantic_triggers:
+    - "system info"
+    - "hardware specs"
+    - "ram usage"
+    - "cpu status"
+    - "system memory"
+execution:
+  envelope: WASM
+  binary_path: logic.wasm
+permissions:
+  network_access: false
+  file_system: none
+  max_memory_mb: 16
+  max_cpu_time_ms: 500

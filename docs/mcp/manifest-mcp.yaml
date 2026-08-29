@@ -1,0 +1,90 @@
+# =====================================================================
+# cluaiz MCP MANIFEST (manifest-mcp.yaml)
+#
+# PURPOSE: An "MCP" (Model Context Protocol) runs outside the Engine.
+# It is a separate process (like Node.js or Python). Engine talks to it via stdio.
+# =====================================================================
+
+# [FIXED SCHEMA] Unique name. Example: "everything", "filesystem", "git"
+name: "everything"
+
+# [FIXED SCHEMA] Version string. Example: "1.0.0"
+version: "1.0.0"
+
+# [FIXED SCHEMA] Short human-readable description.
+description: "Official Model Context Protocol reference test server exercising full protocol capabilities."
+
+# [FIXED SCHEMA] Name of the creator.
+author: "MCP Steering Group"
+
+# [FIXED SCHEMA] Must be exactly "mcp". Engine won't try to FFI this.
+type: "mcp"
+
+# ---------------------------------------------------------------------
+# NEW SCHEMA (inference-cel)
+# ---------------------------------------------------------------------
+discovery:
+  # [FIXED SCHEMA] Keywords so the AI knows this MCP exists.
+  semantic_triggers: 
+    - "test mcp"
+    - "mcp protocol test"
+    - "everything server"
+  
+  # [FIXED SCHEMA] The CEL format to call the MCP tool.
+  cel_grammar: "use mcp::everything -> call_tool(...)"
+
+activation:
+  # [FIXED SCHEMA] Don't run the Node.js process until the AI actually asks for it.
+  lazy_load: true
+  
+  # [FIXED SCHEMA] Event strings that spawn the MCP process.
+  trigger_on: 
+    - "on_command:use mcp::everything"
+
+permissions:
+  # [OPTIONAL] MCP processes manage their own memory, so Engine doesn't cap it.
+  max_memory_mb: null
+  
+  # [OPTIONAL] Timeout guard (ms) for subprocess stdio responses.
+  max_cpu_time_ms: 30000
+  
+  # [FIXED SCHEMA] Network access permissions.
+  network_access: true
+  
+  # [FIXED SCHEMA] Allowed domains (Whitelist).
+  allowed_hosts: []
+  
+  prefix_caching: false
+  
+  # [FIXED SCHEMA] File system access: "none", "read_only", "read_write"
+  file_system: "none"
+
+# ---------------------------------------------------------------------
+# SYSTEM BINDINGS (Dynamic Hardware & Booster State)
+# ---------------------------------------------------------------------
+system_bindings: []
+
+# ---------------------------------------------------------------------
+# CONFIGURATION SETTINGS
+# ---------------------------------------------------------------------
+settings:
+  log_level: { type: "enum", options: ["debug", "info", "warn", "error"], default: "info", desc: "Process logging verbosity" }
+
+# ---------------------------------------------------------------------
+# MCP EXECUTION (Out of Process via Stdio JSON-RPC 2.0)
+# ---------------------------------------------------------------------
+execution:
+  # [FIXED SCHEMA] The terminal executable to spawn.
+  command: "npx"
+  
+  # [FIXED SCHEMA] Arguments passed to the command.
+  args: 
+    - "-y"
+    - "@modelcontextprotocol/server-everything"
+  
+  # [FIXED SCHEMA] Environment variables injected into the OS process.
+  env:
+    NODE_ENV: "production"
+
+execution_mode: "manual"
+default_turns: 3

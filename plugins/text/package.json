@@ -1,0 +1,18 @@
+{
+  "name": "text",
+  "version": "1.0.0",
+  "description": "Deterministic string transformation, regex extraction, hashing, and diffing engine",
+  "category": "plugin",
+  "author": "Cluaiz Core Team",
+  "license": "Apache-2.0",
+  "latest_version": "1.0.0",
+  "versions": {
+    "1.0.0": {
+      "files": {
+        "manifest": "manifest-plugin.yaml",
+        "skill": "SKILL.md",
+        "binary": "logic.wasm"
+      }
+    }
+  }
+}

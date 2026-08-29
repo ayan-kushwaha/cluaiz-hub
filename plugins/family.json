@@ -2,6 +2,10 @@
   "category": "plugins",
   "name": "Cluaiz Plugins",
   "items": {
-    "cluaiz-search": "cluaiz-search/package.json"
+    "math": "math/package.json",
+    "text": "text/package.json",
+    "search": "search/package.json",
+    "time": "time/package.json",
+    "sysinfo": "sysinfo/package.json"
   }
 }

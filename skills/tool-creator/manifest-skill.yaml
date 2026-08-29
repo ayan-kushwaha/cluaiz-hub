@@ -1,0 +1,30 @@
+# =====================================================================
+# cluaiz SKILL MANIFEST (manifest-skill.yaml)
+# =====================================================================
+name: "tool-creator"
+version: "1.0.0"
+description: "Autonomous tool scaffolding and validation engine for Skills, WASM Plugins, and MCP Servers."
+author: "Aryan"
+type: "skill"
+
+discovery:
+  semantic_triggers:
+    - "create plugin"
+    - "build mcp"
+    - "create skill"
+    - "new tool"
+    - "scaffold tool"
+    - "tool foundry"
+
+dependencies:
+  plugins: []
+  mcp: []
+
+permissions:
+  filesystem: true
+  network: false
+  level: "ReadOnly"
+
+execution:
+  execution_mode: "auto"
+  default_turns: 3

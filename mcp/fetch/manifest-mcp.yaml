@@ -1,0 +1,20 @@
+name: fetch
+version: 1.0.0
+description: Official Model Context Protocol web content fetching and HTML-to-markdown conversion bridge
+category: mcp
+execution_mode: manual
+default_turns: 0
+discovery:
+  semantic_triggers:
+    - "fetch url"
+    - "read webpage"
+    - "scrape url"
+    - "fetch web content"
+execution:
+  command: npx
+  args:
+    - "-y"
+    - "@modelcontextprotocol/server-fetch"
+permissions:
+  network_access: true
+  file_system: none

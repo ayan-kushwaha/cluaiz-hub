@@ -1,5 +1,11 @@
 {
   "category": "skills",
   "name": "Cluaiz Skills",
-  "items": {}
+  "items": {
+    "code-reviewer": "code-reviewer/package.json",
+    "tdd-workflow": "tdd-workflow/package.json",
+    "tool-creator": "tool-creator/package.json",
+    "spec-driven": "spec-driven/package.json",
+    "learn-cluaiz": "learn-cluaiz/package.json"
+  }
 }

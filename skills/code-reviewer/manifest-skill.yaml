@@ -1,0 +1,26 @@
+# =====================================================================
+# cluaiz SKILL MANIFEST (manifest-skill.yaml)
+# =====================================================================
+name: "code-reviewer"
+version: "1.0.0"
+description: "Strict multi-language code quality, security vulnerability, memory safety, and DRY enforcement protocol."
+author: "Aryan"
+type: "skill"
+
+discovery:
+  semantic_triggers:
+    - "review this code"
+    - "audit security"
+    - "check bugs"
+    - "code quality audit"
+    - "dry check"
+    - "audit code"
+
+dependencies:
+  plugins: []
+  mcp: []
+
+permissions:
+  filesystem: true
+  network: false
+  level: "ReadOnly"

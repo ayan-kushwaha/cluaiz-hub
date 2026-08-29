@@ -1,0 +1,16 @@
+{
+  "name": "context7",
+  "version": "1.0.0",
+  "description": "Version-specific live library documentation and API reference lookup engine",
+  "category": "mcp",
+  "author": "Context7 Team",
+  "license": "MIT",
+  "latest_version": "1.0.0",
+  "versions": {
+    "1.0.0": {
+      "files": {
+        "manifest": "manifest-mcp.yaml"
+      }
+    }
+  }
+}

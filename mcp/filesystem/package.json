@@ -1,0 +1,16 @@
+{
+  "name": "filesystem",
+  "version": "1.0.0",
+  "description": "Official Model Context Protocol secure file system bridge",
+  "category": "mcp",
+  "author": "MCP Steering Group",
+  "license": "MIT",
+  "latest_version": "1.0.0",
+  "versions": {
+    "1.0.0": {
+      "files": {
+        "manifest": "manifest-mcp.yaml"
+      }
+    }
+  }
+}
