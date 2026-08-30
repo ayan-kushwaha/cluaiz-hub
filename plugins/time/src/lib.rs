@@ -5,6 +5,7 @@ use alloc::vec::Vec;
 use serde::{Deserialize, Serialize};
 
 // Host ABI exposed by Cluaiz Wasmtime Linker
+#[link(wasm_import_module = "cluaiz")]
 extern "C" {
     fn now_utc_ms() -> i64;
     fn os_platform() -> i32;

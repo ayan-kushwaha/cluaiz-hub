@@ -7,16 +7,14 @@ In Cluaiz, **Plugins** provide the raw **Computational Muscle**. While Skills in
 ## 🎯 1. What is a Plugin?
 
 A Plugin is an execution unit containing:
-- **`manifest-plugin.yaml`**: Manifest declaring resource limits, envelope type (`WASM` / `NATIVE`), and triggers.
+- **`package.json`**: Cluaiz Hub single-source registry and dependency index.
 - **Compiled Binary (`logic.wasm` or `.dll`/`.so`)**: Compiled bytecode implementing the Cluaiz C-ABI.
 - **`assets/icon.svg`**: Vector SVG icon for UI.
-- **`package.json`**: Cluaiz Hub registry index.
 
 ```
 plugins/my-plugin/
-├── manifest-plugin.yaml  ← RAM/CPU caps, envelope, triggers
+├── package.json          ← Hub registry packaging & OS binaries
 ├── logic.wasm            ← Compiled WASM bytecode
-├── package.json          ← Hub registry packaging
 └── assets/
     └── icon.svg          ← Vector UI icon
 ```
@@ -41,5 +39,5 @@ flowchart LR
 ### Security Guarantees:
 1. **Zero Ambient Authority:** A WASM plugin cannot access the host filesystem, network sockets, or environment variables unless explicitly granted.
 2. **Deterministic Execution:** Eliminates LLM calculation flaws (e.g. arithmetic errors, string parsing mistakes).
-3. **Hard Memory Caps:** Physical RAM is capped via `wasmtime::ResourceLimiter`. Any attempt to grow memory past `max_memory_mb` is terminated immediately.
-4. **Fuel Limits:** CPU instructions are counted. Infinite loops terminate automatically when fuel is exhausted.
+3. **Hard Memory Caps:** Physical RAM is managed via `wasmtime::ResourceLimiter`.
+4. **Fuel Limits:** CPU instructions are counted to prevent infinite execution loops.

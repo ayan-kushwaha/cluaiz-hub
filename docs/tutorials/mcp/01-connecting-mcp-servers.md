@@ -30,49 +30,48 @@ flowchart LR
     B -->|Context Injection| A
 ```
 
-## Step 1: Defining the MCP Manifest
+## Step 1: Defining the MCP Package Specification (`package.json`)
 
-To register an external MCP server with cluaiz, create a `manifest-mcp.yaml`. Notice how the `execution` block uses `command` and `args` instead of `entry_point`.
+To register an external MCP server with Cluaiz, create a `package.json`. Notice how `versions` defines `command` and `args`:
 
-```yaml
-# =====================================================================
-# cluaiz MCP MANIFEST (manifest-mcp.yaml)
-# =====================================================================
-name: "github-mcp-connector"
-version: "1.0.0"
-description: "Connects the engine to GitHub via official MCP server."
-author: "Cluaiz Community"
-type: "mcp"
-
-discovery:
-  semantic_triggers: ["github", "pull request", "issues", "repo"]
-  cel_grammar: "use mcp::github-mcp-connector -> call_tool(...)"
-
-activation:
-  # Don't run the Node.js process until the AI actually asks for it.
-  lazy_load: true
-  trigger_on: 
-    - "on_command:use mcp::github-mcp-connector"
-
-permissions:
-  # MCP processes manage their own memory, so Engine doesn't cap it.
-  max_memory_mb: null
-  # Long timeout because network APIs take time.
-  max_cpu_time_ms: 30000
-  network_access: true
-  allowed_hosts: ["api.github.com"]
-  prefix_caching: false
-  file_system: "none"
-
-execution:
-  # The terminal command to run.
-  command: "npx"
-  # Arguments passed to the command.
-  args: ["-y", "@modelcontextprotocol/server-github"]
-  # Environment variables injected into the OS process.
-  env:
-    GITHUB_PERSONAL_ACCESS_TOKEN: "${GITHUB_TOKEN}"
+```json
+{
+  "id": "github-mcp-connector",
+  "name": "GitHub MCP Connector",
+  "category": "mcp",
+  "hub_type": "mcp",
+  "logo": "/assets/icon.svg",
+  "title": "Official GitHub MCP Server",
+  "description": "Connects the engine to GitHub via official MCP server.",
+  "author": {
+    "name": "Cluaiz Community",
+    "url": "https://github.com/cluaiz"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "plugins": {},
+    "mcp": {},
+    "skills": {}
+  },
+  "latest_version": "1.0.0",
+  "versions": {
+    "1.0.0": {
+      "updated_at": "2026-07-01T12:00:00Z",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
+      },
+      "files": {
+        "icon": "/assets/icon.svg"
+      }
+    }
+  }
+}
 ```
 
 > [!WARNING]
-> Ensure that you do not expose sensitive API keys in plaintext in the `manifest-mcp.yaml` file. Always use the `${ENV_VAR}` syntax to resolve secrets from the host system environment dynamically.
+> Ensure that you do not expose sensitive API keys in plaintext in the `package.json` file. Always use the `${ENV_VAR}` syntax to resolve secrets from the host system environment dynamically.

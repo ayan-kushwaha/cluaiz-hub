@@ -75,7 +75,7 @@ The Cluaiz engine establishes a strict architectural separation between **Cognit
 |---|---|---|---|
 | **Primary Domain** | Cognitive framing, reasoning frameworks, domain rules | Deterministic mathematical calculation, regex, local indexing | Filesystem access, Git operations, remote databases |
 | **Execution Medium** | Dynamically injected into LLM System Prompt (KV-Cache) | Executed in-process via Wasmtime isolated sandbox | Executed in external child processes communicating via Stdio |
-| **Manifest Spec** | `manifest-skill.yaml` + `SKILL.md` | `manifest-plugin.yaml` + `logic.wasm` | `manifest-mcp.yaml` |
+| **Package Spec** | `package.json` + `SKILL.md` | `package.json` + `logic.wasm` | `package.json` (stdio subprocess) |
 | **Performance Overhead** | Zero runtime compute overhead (pure prompt tokens) | **Sub-millisecond (~1ms)** in-process latency | Process IPC overhead (~10–50ms) |
 | **Safety & Security** | Sandboxed by LLM attention budget | Strict memory caps (`ResourceLimiter`) + CPU fuel limits | Host process isolation with explicit argument whitelisting |
 | **Network & OS Access** | None (Zero ambient authority) | None by default; capability-gated via Host ABI | Declared explicitly in manifest |

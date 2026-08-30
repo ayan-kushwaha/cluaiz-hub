@@ -16,26 +16,24 @@ When the cluaiz Engine spawns the MCP process via `stdio`, it resolves the reque
 
 ---
 
-## Step 1: Subscribe to System Bindings
+## Step 1: Subscribe to Environment Variables
 
-In your `manifest-mcp.yaml`, request the variables you need:
+In your `package.json`, declare the environment variables you need in the version definition:
 
-```yaml
-# ---------------------------------------------------------------------
-# CONFIGURATION SETTINGS
-# ---------------------------------------------------------------------
-# [NEW SCHEMA] Dynamic settings definition. This tells the UI and Engine 
-# what configurable variables exist, their types, and default values.
-settings:
-  api_key: { type: "string", default: "", desc: "API Key for service" }
-  mode: { type: "enum", options: ["fast", "accurate"], default: "fast", desc: "Execution mode" }
-
-# ---------------------------------------------------------------------
-# SYSTEM BINDINGS (Dynamic Hardware & Booster State)
-# ---------------------------------------------------------------------
-system_bindings:
-  - "system_booster.think_mode"
-  - "system_booster.response_length"
+```json
+{
+  "id": "github-mcp-connector",
+  "name": "GitHub MCP Connector",
+  "versions": {
+    "1.0.0": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_TOKEN": "${GITHUB_TOKEN}"
+      }
+    }
+  }
+}
 ```
 
 ## Step 2: Reading the Variables in the MCP Server

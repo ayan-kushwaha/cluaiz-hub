@@ -28,7 +28,7 @@ export SYSTEM_BOOSTER__THINK_MODE="On"
 
 ## Step 2: Run the Server Manually
 
-Run the exact command specified in your `manifest-mcp.yaml` `execution` block.
+Run the exact command specified in your `package.json` `versions` block:
 
 ```bash
 npx -y @modelcontextprotocol/server-github

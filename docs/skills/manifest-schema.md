@@ -1,43 +1,58 @@
-# 📋 Skill Manifest Specification (`manifest-skill.yaml`)
+# 📋 Skill Package Specification (`package.json`)
 
-This document defines the complete schema specification for `manifest-skill.yaml`. Every Skill published to Cluaiz Hub must contain this manifest.
+This document defines the single-source package specification for Skills in the Cluaiz Hub ecosystem.
 
 ---
 
-## 📄 Complete Example Manifest
+## 📄 Complete Skill `package.json`
 
-```yaml
-# =====================================================================
-# cluaiz SKILL MANIFEST (manifest-skill.yaml)
-# =====================================================================
-name: "code-reviewer"
-version: "1.0.0"
-description: "Strict multi-language code quality, security vulnerability, memory safety, and DRY enforcement protocol."
-author: "Aryan"
-type: "skill"
-
-discovery:
-  semantic_triggers:
-    - "review this code"
-    - "audit security"
-    - "check bugs"
-    - "code quality audit"
-    - "dry check"
-
-dependencies:
-  plugins:
-    - "text"
-  mcp:
-    - "git"
-
-permissions:
-  filesystem: true
-  network: false
-  level: "ReadOnly"
-
-execution:
-  execution_mode: "auto" # "auto" | "manual"
-  default_turns: 2       # Number of turns this skill remains active
+```json
+{
+  "id": "code-reviewer",
+  "name": "Code Reviewer",
+  "category": "engineering",
+  "hub_type": "skill",
+  "logo": "/assets/reviewer.svg",
+  "title": "Strict Code Quality Protocol",
+  "description": "Multi-language code quality, memory safety, and DRY enforcement reasoning protocol.",
+  "author": {
+    "name": "Aryan",
+    "url": "https://github.com/cluaiz"
+  },
+  "license": "Apache-2.0",
+  "tags": [
+    "Code Review",
+    "Security",
+    "Rust",
+    "TypeScript"
+  ],
+  "dependencies": {
+    "plugins": {
+      "text": {
+        "version": "^1.0.0",
+        "url": "https://raw.githubusercontent.com/cluaiz/cluaiz-hub/main/plugins/text/package.json"
+      }
+    },
+    "mcp": {
+      "git": {
+        "version": "^1.0.0",
+        "url": "https://raw.githubusercontent.com/cluaiz/cluaiz-hub/main/mcp/git/package.json"
+      }
+    },
+    "skills": {}
+  },
+  "latest_version": "1.0.0",
+  "versions": {
+    "1.0.0": {
+      "updated_at": "2026-07-01T12:00:00Z",
+      "files": {
+        "skill": "/SKILL.md",
+        "icon": "/assets/icon.svg",
+        "file_directory": "https://github.com/cluaiz/cluaiz-hub/releases/download/v1.0.0/code-reviewer-files.zip"
+      }
+    }
+  }
+}
 ```
 
 ---
@@ -45,17 +60,10 @@ execution:
 ## 🔍 Field Reference Table
 
 | Field | Type | Required? | Description |
-|---|---|---|---|
-| `name` | `string` | **Yes** | Unique package identifier (lowercase `kebab-case`). Must match directory name. |
-| `version` | `string` | **Yes** | Semver version string (e.g. `"1.0.0"`). |
-| `description` | `string` | **Yes** | Human-readable explanation of the skill's purpose. |
-| `author` | `string` | **Yes** | Author or organization name. |
-| `type` | `string` | **Yes** | Must be exactly `"skill"`. |
-| `discovery.semantic_triggers` | `string[]` | **Yes** | List of keyword phrases that activate this skill during inference. |
-| `dependencies.plugins` | `string[]` | Optional | List of WASM plugins required by this skill. |
-| `dependencies.mcp` | `string[]` | Optional | List of MCP servers required by this skill. |
-| `permissions.filesystem` | `bool` | Optional | Whether the skill requires workspace file reading. |
-| `permissions.network` | `bool` | Optional | Whether external network access is needed. |
-| `permissions.level` | `string` | Optional | `"ReadOnly"`, `"ReadWrite"`, or `"None"`. |
-| `execution.execution_mode` | `string` | Optional | `"auto"` (activated by triggers) or `"manual"` (user attached). Default: `"auto"`. |
-| `execution.default_turns` | `integer` | Optional | Lifetime turn count before auto-purging (`-1` for persistent). Default: `1`. |
+| :--- | :---: | :---: | :--- |
+| `id` | `string` | **Yes** | Unique skill ID. |
+| `name` | `string` | **Yes** | Human-readable title. |
+| `hub_type` | `string` | **Yes** | Must be `"skill"`. |
+| `dependencies` | `object` | **Yes** | Required muscle plugins or MCP bridges needed by this reasoning skill. |
+| `versions.*.files.skill` | `string` | **Yes** | Relative path to `SKILL.md` containing prompt instructions. |
+| `versions.*.files.file_directory` | `string` | **Yes** | Release zip bundle download URL. |

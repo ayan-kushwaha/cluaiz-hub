@@ -5,7 +5,7 @@
   "hub_type": "plugin",
   "build_type": "binary",
   "github_action": true,
-  "logo": "/assets/cluaiz-search.webp",
+  "logo": "/assets/search.svg",
   "title": "Cluaiz Live Web Search Plugin",
   "description": "Native web search plugin for the Cluaiz Engine. Allows the AI to autonomously query the internet, scrape websites, and inject real-time live data directly into the active context window. Bypasses standard network stacks via direct C-FFI memory mapping for highly optimized web retrieval.",
   "tags": [

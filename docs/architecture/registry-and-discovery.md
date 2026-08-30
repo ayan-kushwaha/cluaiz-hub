@@ -38,17 +38,17 @@ Whenever the engine boots or installs a new component, `ToolsRegistry::sync_with
 
 ```
 ~/.cluaiz/tools/
-├── skills/   ──> Scanned for SKILL.md and manifest-skill.yaml
-├── plugins/  ──> Scanned for manifest-plugin.yaml and .wasm / .dll binaries
-└── mcp/      ──> Scanned for manifest-mcp.yaml
+├── skills/   ──> Scanned for SKILL.md and package.json
+├── plugins/  ──> Scanned for logic.wasm / binaries and package.json
+└── mcp/      ──> Scanned for package.json
 ```
 
 ### Probing Steps:
 1. **Purge Dangling Entries:** If a directory listed in `tools_registry.json` was deleted manually from disk, the entry is automatically purged from the registry.
 2. **Metadata Extraction:**
-   - **Skills:** `probe_skill_frontmatter` parses YAML frontmatter in `SKILL.md`.
-   - **Plugins:** `probe_plugin_metadata` parses `manifest-plugin.yaml` and links the `.wasm` binary.
-   - **MCPs:** `probe_mcp_metadata` parses `manifest-mcp.yaml` and extracts commands and arguments.
+   - **Skills:** `probe_skill_frontmatter` parses YAML frontmatter in `SKILL.md` or `package.json`.
+   - **Plugins:** `probe_plugin_metadata` parses `package.json` and links the `.wasm`/`.dll` binary.
+   - **MCPs:** `probe_mcp_metadata` parses `package.json` and extracts commands and arguments.
 3. **Atomic Save:** The updated catalog is written back to `tools_registry.json`.
 
 ---

@@ -28,45 +28,43 @@ flowchart TD
 > [!NOTE]
 > Plugins are highly secure. Since they execute inside the `Wasmtime` VM, they cannot access the host operating system, read local files, or crash the Engine memory unless explicitly granted permission.
 
-## Step 1: The Manifest
+## Step 1: The Package Specification (`package.json`)
 
-Every plugin requires a `manifest-plugin.yaml`. The Engine uses this to configure the WASM limits and entry points.
+Every plugin requires a `package.json` to define identity, distribution links, and dependencies:
 
-```yaml
-# =====================================================================
-# cluaiz PLUGIN MANIFEST (manifest-plugin.yaml)
-# =====================================================================
-name: "cluaiz-math-accelerator"
-version: "1.0.0"
-description: "A hardware-accelerated math parsing plugin compiled to WASM."
-author: "Cluaiz Engineers"
-type: "plugin"
-
-discovery:
-  # Keywords that will be injected into the AI's prompt. 
-  semantic_triggers: ["math", "calculation", "formula"]
-
-activation:
-  lazy_load: true
-  trigger_on: 
-    - "on_command:use plugin::cluaiz-math-accelerator"
-
-permissions:
-  # Hard RAM limit (in MB). The Engine will OOM kill the WASM if exceeded.
-  max_memory_mb: 64
-  # Max CPU execution time (ms). To prevent infinite loops.
-  max_cpu_time_ms: 500
-  network_access: false
-  vram_kv_inject: false
-  file_system: "none"
-
-execution:
-  # Sandbox type. "WASM" (Strict limits)
-  envelope: "WASM"
-  # The exported C-language function name. The Engine will call this.
-  entry_point: "cluaiz_entry"
-  # How to serialize the data. "MsgPack" or "JSON".
-  payload_format: "MsgPack"
+```json
+{
+  "id": "cluaiz-math-accelerator",
+  "name": "Math Accelerator",
+  "category": "utility",
+  "hub_type": "plugin",
+  "build_type": "wasm",
+  "logo": "/assets/icon.svg",
+  "title": "Hardware-Accelerated Math Plugin",
+  "description": "A high-performance math parsing plugin compiled to WASM.",
+  "author": {
+    "name": "Cluaiz Engineers",
+    "url": "https://github.com/cluaiz"
+  },
+  "license": "Apache-2.0",
+  "dependencies": {
+    "plugins": {},
+    "mcp": {},
+    "skills": {}
+  },
+  "latest_version": "1.0.0",
+  "versions": {
+    "1.0.0": {
+      "updated_at": "2026-07-01T12:00:00Z",
+      "builds_os": ["wasm"],
+      "files": {
+        "binary": "logic.wasm",
+        "icon": "/assets/icon.svg",
+        "file_directory": "https://github.com/cluaiz/cluaiz-hub/releases/download/v1.0.0/math-files.zip"
+      }
+    }
+  }
+}
 ```
 
 ## Step 2: Scaffold the Rust WASM Project

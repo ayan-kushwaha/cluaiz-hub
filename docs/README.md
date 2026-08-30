@@ -28,7 +28,7 @@ cluaiz-hub/docs/
 
 ### 🧠 2. Skills (`docs/skills/`)
 - [Skills Overview](file:///c:/Users/Aryan/my/Cluaiz-workspace/Cluaiz-Technologies/cluaiz-hub/docs/skills/overview.md) — Cognitive prompt architecture and KV-cache injection.
-- [Skill Manifest Schema](file:///c:/Users/Aryan/my/Cluaiz-workspace/Cluaiz-Technologies/cluaiz-hub/docs/skills/manifest-schema.md) — `manifest-skill.yaml` specification and field reference.
+- [Skill Package Schema](file:///c:/Users/Aryan/my/Cluaiz-workspace/Cluaiz-Technologies/cluaiz-hub/docs/skills/manifest-schema.md) — `package.json` specification and field reference for skills.
 - [Authoring Guide](file:///c:/Users/Aryan/my/Cluaiz-workspace/Cluaiz-Technologies/cluaiz-hub/docs/skills/authoring-guide.md) — Writing high-assurance `SKILL.md` prompts and YAML frontmatter.
 - [Tutorial: Build Your First Skill](file:///c:/Users/Aryan/my/Cluaiz-workspace/Cluaiz-Technologies/cluaiz-hub/docs/skills/tutorial-first-skill.md) — Step-by-step walkthrough.
 
@@ -36,7 +36,7 @@ cluaiz-hub/docs/
 
 ### ⚡ 3. Plugins (`docs/plugins/`)
 - [Plugins Overview](file:///c:/Users/Aryan/my/Cluaiz-workspace/Cluaiz-Technologies/cluaiz-hub/docs/plugins/overview.md) — Wasmtime sandbox, fuel limits, and memory caps.
-- [Plugin Manifest Schema](file:///c:/Users/Aryan/my/Cluaiz-workspace/Cluaiz-Technologies/cluaiz-hub/docs/plugins/manifest-schema.md) — `manifest-plugin.yaml` specification.
+- [Plugin Package Schema](file:///c:/Users/Aryan/my/Cluaiz-workspace/Cluaiz-Technologies/cluaiz-hub/docs/plugins/manifest-schema.md) — `package.json` specification for plugins.
 - [WASM C-ABI & Host ABI Guide](file:///c:/Users/Aryan/my/Cluaiz-workspace/Cluaiz-Technologies/cluaiz-hub/docs/plugins/wasm-abi-guide.md) — Memory exports and Capability-Gated Host hooks.
 - [Tutorial: Build Your First Plugin](file:///c:/Users/Aryan/my/Cluaiz-workspace/Cluaiz-Technologies/cluaiz-hub/docs/plugins/tutorial-first-plugin.md) — Writing and compiling a Rust WASM plugin.
 
@@ -44,7 +44,7 @@ cluaiz-hub/docs/
 
 ### 🔌 4. MCP (`docs/mcp/`)
 - [MCP Overview](file:///c:/Users/Aryan/my/Cluaiz-workspace/Cluaiz-Technologies/cluaiz-hub/docs/mcp/overview.md) — Model Context Protocol in Cluaiz, stdio JSON-RPC 2.0.
-- [MCP Manifest Schema](file:///c:/Users/Aryan/my/Cluaiz-workspace/Cluaiz-Technologies/cluaiz-hub/docs/mcp/manifest-schema.md) — `manifest-mcp.yaml` specification.
+- [MCP Package Schema](file:///c:/Users/Aryan/my/Cluaiz-workspace/Cluaiz-Technologies/cluaiz-hub/docs/mcp/manifest-schema.md) — `package.json` specification for MCP connectors.
 - [Tutorial: Connect an MCP Server](file:///c:/Users/Aryan/my/Cluaiz-workspace/Cluaiz-Technologies/cluaiz-hub/docs/mcp/tutorial-connect-mcp.md) — Packaging and testing an MCP server.
 
 ---

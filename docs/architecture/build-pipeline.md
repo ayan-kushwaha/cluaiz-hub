@@ -93,7 +93,6 @@ Here is a full example of a structured Plugin package:
         "skill": "/SKILL.md",
         "scripts": "/scripts",
         "references": "/references",
-        "manifest": "/manifest-plugin.yaml",
         "file_directory": "https://github.com/cluaiz/cluaiz-hub/releases/download/ext-cluaiz-search-v0.1.0/cluaiz-search-files.zip"
       }
     }

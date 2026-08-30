@@ -78,35 +78,53 @@ cp target/wasm32-unknown-unknown/release/hasher.wasm logic.wasm
 
 ---
 
-## 📄 Step 4: Create `manifest-plugin.yaml`
+## 📦 Step 4: Create `package.json`
 
-```yaml
-name: "hasher"
-version: "1.0.0"
-description: "Deterministic SHA-256 cryptographic hashing plugin."
-author: "Aryan"
-type: "plugin"
-
-discovery:
-  semantic_triggers:
-    - "sha256"
-    - "hash text"
-    - "generate hash"
-
-permissions:
-  max_memory_mb: 16
-  max_cpu_time_ms: 500
-  network_access: false
-  file_system: "none"
-
-execution:
-  envelope: "WASM"
-  binary_path: "logic.wasm"
-  entry_point: "execute_cel"
+```json
+{
+  "id": "hasher",
+  "name": "Hasher",
+  "category": "utility",
+  "hub_type": "plugin",
+  "build_type": "wasm",
+  "logo": "/assets/icon.svg",
+  "title": "Deterministic Cryptographic Hasher",
+  "description": "Deterministic SHA-256 cryptographic hashing plugin.",
+  "author": {
+    "name": "Aryan",
+    "url": "https://github.com/cluaiz"
+  },
+  "license": "Apache-2.0",
+  "tags": [
+    "Crypto",
+    "SHA256",
+    "Hashing"
+  ],
+  "dependencies": {
+    "plugins": {},
+    "mcp": {},
+    "skills": {}
+  },
+  "latest_version": "1.0.0",
+  "versions": {
+    "1.0.0": {
+      "updated_at": "2026-07-01T12:00:00Z",
+      "builds_os": [
+        "wasm"
+      ],
+      "files": {
+        "binary": "logic.wasm",
+        "icon": "/assets/icon.svg",
+        "file_directory": "https://github.com/cluaiz/cluaiz-hub/releases/download/v1.0.0/hasher-files.zip"
+      }
+    }
+  }
+}
 ```
 
 ---
 
-## 🎨 Step 5: Add `assets/icon.svg` & `package.json`
+## 🎨 Step 5: Add `assets/icon.svg` & Test Locally
 
-Add `assets/icon.svg` and `package.json`. Copy the folder to `~/.cluaiz/tools/plugins/hasher/`. The engine will auto-probe and make the plugin available for inference immediately!
+Add `assets/icon.svg`. Copy the folder to `~/.cluaiz/tools/plugins/hasher/`. The engine will auto-probe and make the plugin available for inference immediately!
+

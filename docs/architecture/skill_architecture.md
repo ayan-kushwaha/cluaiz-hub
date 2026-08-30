@@ -112,4 +112,4 @@ The Cluaiz Engine handles skills fundamentally differently from standard text pr
 
 > [!IMPORTANT]
 > **Manifest Fallback Priority**
-> The Engine's standard entry point is `SKILL.md` (which contains the YAML frontmatter). The resolution priority is: `SKILL.md` → `manifest-plugin.yaml` → `manifest.yaml` → `manifest.json`.
+> The Engine's standard entry point is `SKILL.md` (which contains the YAML frontmatter) or `package.json`. The resolution priority is: `SKILL.md` → `package.json`.

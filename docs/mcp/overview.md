@@ -21,7 +21,7 @@ sequenceDiagram
     participant Server as External MCP Process (Node.js / Python)
 
     Engine->>Client: McpClient::call_tool("filesystem", "read_file", args)
-    Note over Client: Spawns subprocess with piped stdio & 30s timeout
+    Note over Client: Spawns subprocess with piped stdio & timeout guard
     Client->>Server: Write to stdin: {"jsonrpc":"2.0","method":"tools/call","params":{...},"id":1}
     Server-->>Client: Read from stdout: {"jsonrpc":"2.0","result":{"content":[...]},"id":1}
     Client-->>Engine: Parsed Result Value
@@ -31,6 +31,6 @@ sequenceDiagram
 
 ## 🛡️ 2. Security & Process Isolation
 
-1. **Explicit Whitelisting:** External commands (`command: "npx"`, `args: [...]`) must be explicitly declared in `manifest-mcp.yaml`.
-2. **Timeout Guards:** Every stdio read is guarded by a 30-second asynchronous timeout (`tokio::time::timeout`).
+1. **Explicit Whitelisting:** External commands (`command: "npx"`, `args: [...]`) must be explicitly declared in `package.json`.
+2. **Timeout Guards:** Every stdio read is guarded by an asynchronous timeout guard (`tokio::time::timeout`).
 3. **No Ambient Host Authority:** MCP processes run in their own process sandbox with standard OS user-level permissions.

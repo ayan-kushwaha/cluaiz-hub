@@ -30,7 +30,7 @@ The generation halts. This is the **Agentic Pause**. The user's screen pauses, a
 
 Once paused, the Engine performs the following operations without the LLM's knowledge:
 1. **Registry Lookup:** It queries the `MasterRegistry` for the requested plugin (e.g., `cluaiz-search`).
-2. **Schema & Manual Fetch:** It reads the `manifest-plugin.yaml` and the `SKILL.md` files directly from the plugin's domain folder.
+2. **Schema & Manual Fetch:** It reads the `package.json` and the `SKILL.md` files directly from the plugin's domain folder.
 3. **Prompt Mutation:** The Engine modifies the ongoing conversation prompt, appending the schema:
    ```text
    [SYSTEM INJECTION: TOOL SCHEMA FOR cluaiz-search]

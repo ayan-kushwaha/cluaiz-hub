@@ -6,6 +6,8 @@
     "text": "text/package.json",
     "search": "search/package.json",
     "time": "time/package.json",
-    "sysinfo": "sysinfo/package.json"
+    "sysinfo": "sysinfo/package.json",
+    "cluaizdb": "cluaizdb/package.json",
+    "web-search": "web-search/package.json"
   }
 }

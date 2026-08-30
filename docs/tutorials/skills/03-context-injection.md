@@ -14,7 +14,7 @@ In cluaiz, this is an anti-pattern. Large system prompts consume massive amounts
 
 cluaiz uses **Dynamic Context Injection**. 
 
-Instead of loading every Skill into memory at once, the Engine uses the `discovery.semantic_triggers` defined in your `manifest-skill.yaml` to route inputs.
+Instead of loading every Skill into memory at once, the Engine uses the `triggers.semantic` defined in your `SKILL.md` frontmatter to route inputs.
 
 ```mermaid
 flowchart TD

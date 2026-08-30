@@ -12,22 +12,19 @@ cluaiz-hub/
 ├── skills/
 │   ├── family.json           ← Index of all published Skills
 │   └── code-reviewer/
-│       ├── package.json      ← Package version mapping & asset hashes
-│       ├── manifest-skill.yaml
+│       ├── package.json      ← Package version mapping, dependencies & assets
 │       ├── SKILL.md
 │       └── assets/icon.svg
 ├── plugins/
 │   ├── family.json           ← Index of all published Plugins
 │   └── math/
 │       ├── package.json
-│       ├── manifest-plugin.yaml
 │       ├── logic.wasm
 │       └── assets/icon.svg
 └── mcp/
     ├── family.json           ← Index of all published MCP Servers
     └── filesystem/
         ├── package.json
-        ├── manifest-mcp.yaml
         └── assets/icon.svg
 ```
 
@@ -72,23 +69,37 @@ Each category directory contains a `family.json` mapping package names to their 
 
 ## 📋 4. Package Metadata (`package.json`)
 
-Every package must contain a `package.json` defining semver versions and file bundle links:
+Every package must contain a `package.json` defining semver versions, dependencies, and file bundle links:
 
 ```json
 {
-  "name": "math",
-  "version": "1.0.0",
-  "description": "Deterministic high-precision arithmetic and mathematical evaluation engine",
+  "id": "math",
+  "name": "Math Evaluator",
   "category": "plugin",
-  "author": "Aryan",
+  "hub_type": "plugin",
+  "build_type": "wasm",
+  "logo": "/assets/icon.svg",
+  "title": "Deterministic Math Plugin",
+  "description": "Deterministic high-precision arithmetic and mathematical evaluation engine",
+  "author": {
+    "name": "Aryan",
+    "url": "https://github.com/cluaiz"
+  },
   "license": "Apache-2.0",
   "latest_version": "1.0.0",
+  "dependencies": {
+    "plugins": {},
+    "mcp": {},
+    "skills": {}
+  },
   "versions": {
     "1.0.0": {
+      "updated_at": "2026-07-01T12:00:00Z",
+      "builds_os": ["wasm"],
       "files": {
-        "manifest": "manifest-plugin.yaml",
         "binary": "logic.wasm",
-        "icon": "assets/icon.svg"
+        "icon": "assets/icon.svg",
+        "file_directory": "https://github.com/cluaiz/cluaiz-hub/releases/download/v1.0.0/math-files.zip"
       }
     }
   }

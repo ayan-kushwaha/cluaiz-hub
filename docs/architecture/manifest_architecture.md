@@ -1,128 +1,83 @@
-# Two-Tier Tool Architecture: Registry and Manifest
+# Two-Tier Tool Architecture: Registry and Package Specification
 
-## 1. Diátaxis: Explanation (Architectural Deep Dive)
+## 1. Architectural Deep Dive
 
-This document explains the Two-Tier Registry Architecture governing how the cluaiz Engine discovers, indexes, and executes plugins and MCP servers without O(N) directory scanning during boot.
+This document explains the Two-Tier Registry Architecture governing how the Cluaiz Engine discovers, indexes, and executes plugins, skills, and MCP servers without O(N) directory scanning during boot.
 
 ---
 
 ## 2. Architectural Flow
 
-The engine uses a strict separation of concerns between **Indexing** (`registry.yaml`) and **Execution Rules** (`manifest-plugin.yaml` / `manifest-mcp.yaml`).
+The engine uses a clean separation of concerns between **Cloud Distribution Indexing** (`package.json`) and **Local Registry State** (`tools_registry.json`).
 
 ```mermaid
 graph TD
-    A["Engine Boot (Cold Start)"] --> B["Bincode deserialize registry.bin (Fast Cache)"]
-    B -- "Cache Miss" --> C["Parse ~/.cluaiz/engine/config/registry.yaml"]
-    C --> D{"Evaluate Load Strategy"}
+    A["Engine Boot (Cold Start)"] --> B["Read ~/.cluaiz/engine/config/tools_registry.json"]
+    B --> C{"Resolve Component"}
     
-    D -->|Eager| E["Load binary to RAM instantly"]
-    D -->|Lazy| F["Register to ActivationEventBus (Zero RAM)"]
+    C -->|Plugin| D["Load WASM / Native binary via WasmExecutor"]
+    C -->|Skill| E["Inject SKILL.md into LLM KV-Cache"]
+    C -->|MCP| F["Spawn subprocess via Stdio JSON-RPC"]
     
-    G["AI generates CEL Command"] --> H["ActivationEventBus Triggers"]
-    H --> I["Locate storage_domain on disk"]
-    I --> J["Parse manifest-*.yaml (Execution Rules)"]
-    J --> K["Enforce Sandbox limits (Memory/Fuel)"]
-    K --> L["FFI via libloading (execute_cel)"]
+    G["AI generates CEL Command"] --> H["ToolsEngine matches component"]
+    H --> I["Execute in-process or via stdio"]
+    I --> J["Return Result to Context"]
 ```
 
 ---
 
-## 3. The Master Registry (`MasterRegistry`)
-**Source of Truth File:** `~/.cluaiz/engine/config/registry.yaml`  
-**Binary Cache:** `registry.bin`  
-**Code Location:** `registry_index.rs`
+## 3. The Package Distribution Standard (`package.json`)
+**Source of Truth:** `package.json` inside each component directory.
 
-The engine reads this file *once* at boot. It contains a hashmap of all known `plugins`, `skills`, and `mcp` servers.
+Each component declares its identity, dependencies (transitive skills/plugins/MCPs), and release binaries:
 
-### `RegistryEntry` Schema (Exhaustive)
-
-| Keyword | Type | Description |
-|---|---|---|
-| `id` | `String` | Unique identifier generated at installation (e.g., `ext_cluaiz_search_12345`). |
-| `domain` | `String` | Relative path where the component lives (e.g., `core/cluaiz-db`). Used to locate the component folder instantly. |
-| `load_strategy` | `Enum` | `EAGER` (Load into RAM immediately), `LAZY` (Register events, load on demand), `MANUAL` (Only via CLI). |
-| `activation_events`| `Vec<String>` | Event patterns that trigger lazy loading (e.g., `"on_command:use plugin::cluaiz-search"`). |
-| `enabled` | `bool` | If false, the engine ignores the component entirely. Default is `true`. |
-| `binary_hash` | `Option<String>`| SHA256 checksum to verify the binary wasn't tampered with. |
-| `semantic_index` | `Option<Vec<String>>` | Keyword triggers for the AI to instantly route requests. |
-
----
-
-## 4. The Component Manifest (`PluginManifest`)
-**Source of Truth File:** `manifest-plugin.yaml` / `manifest-mcp.yaml` (inside the component's `storage_domain` folder)  
-**Code Location:** `plugin_manager.rs`
-
-This file defines *how* the component executes, its hardware limits, and its exact AI interface. It is lazily parsed only when the component is triggered.
-
-> [!TIP]
-> **Complete Example:** View a fully documented, real-world example of this file here: [**`docs/architecture/manifest.yaml`**](file:///c:/Users/Aryan/my/Cluaiz-workspace/Cluaiz-Technologies/cluaiz-hub/docs/architecture/manifest.yaml).
-
-### Base Metadata Fields
-| Keyword | Type | Description |
-|---|---|---|
-| `name` | `String` | Exact name of the component (e.g., `cluaiz-search`). |
-| `version` | `String` | Semantic version string (e.g., `1.0.0`). |
-| `description` | `String` | Brief description of the component's purpose. |
-| `author` | `String` | Author or publisher name. |
-| `storage_domain` | `String` | Redundant path mapping kept for backwards compatibility (mirrors `RegistryEntry.domain`). |
-| `entrypoint` | `String` | **CRITICAL:** The FFI loader actively uses this root-level field to locate the DLL relative to the component path. |
-
-### `ai_interface` Block (AI Routing Rules)
-| Keyword | Type | Description |
-|---|---|---|
-| `keywords` | `Vec<String>` | Semantic keywords that trigger this plugin. |
-| `cel_syntax` | `Option<String>`| The exact CEL syntax exposed to the AI model. |
-| `cel_returns` | `Option<String>`| JSON schema description of what the CEL call returns. |
-| `usage_example` | `Option<String>`| Human-readable example of how to invoke the plugin. |
-
-### `settings` and `system_bindings` Blocks (Dynamic Config Injection)
-| Keyword | Type | Description |
-|---|---|---|
-| `settings` | `Map<String, SettingDef>` | Defines variables the plugin accepts (e.g., `api_key`). Engine resolves these from user config and injects them. |
-| `system_bindings` | `Vec<String>` | Tells the Engine to pass internal states (e.g., `"system_booster.think_mode"`) down to the payload. No disk I/O needed by the plugin! |
-
-
-### `engine_rules` Block (Security & Hardware Limits)
-| Keyword | Type | Description |
-|---|---|---|
-| `sandbox_type` | `Enum` | **CRITICAL:** Must be `WASM`, `NATIVE`, or `PROCESS`. Defines execution isolation. |
-| `max_memory_mb`| `Option<u32>` | Hard RAM cap in MB. Memory allocator traps and kills if breached. |
-| `fuel_limit` | `Option<u64>` | WASM instruction fuel limit to prevent infinite loops. |
-| `timeout_ms` | `Option<u64>` | Maximum execution duration in milliseconds before termination. |
-| `allow_network` | `bool` | Can this component make outbound network requests? |
-| `allow_file_system` | `bool` | Can this component read/write to the local OS filesystem? |
-| `allow_env_vars` | `bool` | Can this component read host OS environment variables? |
-| `allow_subprocess` | `bool` | Can this component spawn child processes? (Used with `PROCESS` sandbox). |
-
-### `ffi_bindings` Block (Binary Linking)
-| Keyword | Type | Description |
-|---|---|---|
-| `binary_path` | `String` | Relative path to the executable or DLL. |
-| `entry_point` | `String` | Universal CEL entry point function name (defaults to `execute_cel`). |
-
-### `storage` Block (Disk Management)
-| Keyword | Type | Description |
-|---|---|---|
-| `domain` | `String` | Modern standard for mapping the storage path. |
-| `cache_dir` | `String` | Sandboxed cache directory automatically created by `PluginManager`. Defaults to `.cache`. |
-| `data_dir` | `Option<String>`| Optional persistent data directory path. |
-
-### Dynamic / Future Schemas
-| Keyword | Type | Description |
-|---|---|---|
-| `execution` | `Value (JSON)` | Flexible schema for defining advanced execution patterns. |
-| `permissions` | `Value (JSON)` | Flexible schema for fine-grained security policies. |
+```json
+{
+  "id": "cluaiz-search",
+  "name": "Cluaiz Web Search",
+  "category": "research",
+  "hub_type": "plugin",
+  "build_type": "binary",
+  "latest_version": "0.1.1",
+  "dependencies": {
+    "plugins": {},
+    "mcp": {},
+    "skills": {}
+  },
+  "versions": {
+    "0.1.1": {
+      "updated_at": "2026-07-01T15:59:00Z",
+      "os": {
+        "windows": "https://github.com/.../cluaiz-search_windows_x64.dll",
+        "linux": "https://github.com/.../libcluaiz-search_linux_x64.so"
+      },
+      "files": {
+        "skill": "/SKILL.md",
+        "file_directory": "https://github.com/.../cluaiz-search-files.zip"
+      }
+    }
+  }
+}
+```
 
 ---
 
-## 5. Crucial Implementation Notes
+## 4. Local Installation Index (`tools_registry.json`)
+**Location:** `~/.cluaiz/engine/config/tools_registry.json`
 
-> [!CAUTION]
-> **Serialization Case-Sensitivity:** The `SandboxType` enum uses `#[serde(rename_all = "UPPERCASE")]`. You MUST write `NATIVE`, `WASM`, or `PROCESS` in all caps in the YAML file. Using CamelCase (e.g., `NativeDll`) will cause fatal deserialization panics.
+Tracks the installed tools on the local node:
 
-> [!WARNING]
-> **Memory Leaks in NATIVE FFI:** For `NATIVE` plugins, the host's `execute()` FFI bridge strictly expects the DLL to export `free_cel_response(*mut c_char)`. If you export a generic string freeing function (like `free_string`), the host engine will fail to find the symbol and cause memory leaks or segmentation faults.
-
-> [!IMPORTANT]
-> **The `entrypoint` Quirks:** Although `ffi_bindings.binary_path` exists, the `PluginManager::execute()` function currently relies on the root-level `entrypoint` string to resolve `lib_path`. Ensure both are populated correctly for backward compatibility.
+```json
+{
+  "installed_tools": {
+    "cluaiz-search": {
+      "id": "cluaiz-search",
+      "name": "cluaiz-search",
+      "category": "plugin",
+      "local_dir": "~/.cluaiz/tools/plugins/cluaiz-search",
+      "enabled": true,
+      "execution_mode": "auto"
+    }
+  }
+}
+```

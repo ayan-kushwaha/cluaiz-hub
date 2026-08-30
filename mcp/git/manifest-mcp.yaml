@@ -11,10 +11,9 @@ discovery:
     - "git log"
     - "git history"
 execution:
-  command: npx
+  command: uvx
   args:
-    - "-y"
-    - "@modelcontextprotocol/server-git"
+    - "mcp-server-git"
 permissions:
   network_access: false
   file_system: read

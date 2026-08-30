@@ -174,6 +174,15 @@ fn create_error_response(msg: &str) -> *mut c_char {
 
 /// Memory cleanup for the FFI boundary
 #[no_mangle]
+pub extern "C" fn cluaiz_free_payload(ptr: *mut c_char, _len: usize) {
+    if !ptr.is_null() {
+        unsafe {
+            let _ = CString::from_raw(ptr);
+        }
+    }
+}
+
+#[no_mangle]
 pub extern "C" fn free_string(ptr: *mut c_char) {
     if !ptr.is_null() {
         unsafe {

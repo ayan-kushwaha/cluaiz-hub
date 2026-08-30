@@ -1,17 +1,54 @@
 {
-  "name": "math",
-  "version": "1.0.0",
-  "description": "Deterministic high-precision arithmetic, calculus, and mathematical evaluator",
-  "category": "plugin",
-  "author": "Aryan",
+  "id": "math",
+  "name": "Math Evaluator",
+  "category": "utility",
+  "hub_type": "plugin",
+  "build_type": "wasm",
+  "logo": "/assets/math.svg",
+  "title": "Deterministic Math Plugin",
+  "description": "High-precision arithmetic, calculus, and mathematical expression evaluator for Cluaiz.",
+  "author": {
+    "name": "Aryan",
+    "url": "https://github.com/cluaiz"
+  },
   "license": "Apache-2.0",
+  "tags": [
+    "Math",
+    "Calculus",
+    "Precision",
+    "WASM"
+  ],
+  "dependencies": {
+    "plugins": {
+      "text": {
+        "version": "^1.0.0",
+        "url": "https://raw.githubusercontent.com/cluaiz/cluaiz-hub/main/plugins/text/package.json"
+      }
+    },
+    "mcp": {
+      "fetch": {
+        "version": "^1.0.0",
+        "url": "https://raw.githubusercontent.com/cluaiz/cluaiz-hub/main/mcp/fetch/package.json"
+      }
+    },
+    "skills": {
+      "learn-cluaiz": {
+        "version": "^1.0.0",
+        "url": "https://raw.githubusercontent.com/cluaiz/cluaiz-hub/main/skills/learn-cluaiz/package.json"
+      }
+    }
+  },
   "latest_version": "1.0.0",
   "versions": {
     "1.0.0": {
+      "updated_at": "2026-07-01T12:00:00Z",
+      "builds_os": [
+        "wasm"
+      ],
       "files": {
-        "manifest": "manifest-plugin.yaml",
         "binary": "logic.wasm",
-        "icon": "assets/icon.svg"
+        "icon": "/assets/icon.svg",
+        "file_directory": "https://github.com/cluaiz/cluaiz-hub/releases/download/v1.0.0/math-files.zip"
       }
     }
   }

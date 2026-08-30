@@ -13,37 +13,54 @@ cd everything
 
 ---
 
-## 📄 Step 2: Create `manifest-mcp.yaml`
+## 📦 Step 2: Create `package.json`
 
-Create `manifest-mcp.yaml`:
+Create `package.json` with the subprocess command and arguments:
 
-```yaml
-name: "everything"
-version: "1.0.0"
-description: "Official Model Context Protocol reference test server exercising all MCP protocol capabilities."
-author: "MCP Steering Group"
-type: "mcp"
-
-discovery:
-  semantic_triggers:
-    - "test mcp"
-    - "mcp protocol test"
-    - "everything server"
-
-permissions:
-  network_access: true
-  file_system: "none"
-
-execution:
-  command: "npx"
-  args:
-    - "-y"
-    - "@modelcontextprotocol/server-everything"
+```json
+{
+  "id": "everything",
+  "name": "MCP Everything Server",
+  "category": "mcp",
+  "hub_type": "mcp",
+  "logo": "/assets/icon.svg",
+  "title": "Model Context Protocol Reference Server",
+  "description": "Official reference MCP server exercising full tool, resource, and prompt protocols.",
+  "author": {
+    "name": "MCP Steering Group",
+    "url": "https://modelcontextprotocol.io"
+  },
+  "license": "MIT",
+  "tags": [
+    "MCP",
+    "Reference",
+    "Bridge"
+  ],
+  "dependencies": {
+    "plugins": {},
+    "mcp": {},
+    "skills": {}
+  },
+  "latest_version": "1.0.0",
+  "versions": {
+    "1.0.0": {
+      "updated_at": "2026-07-01T12:00:00Z",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-everything"
+      ],
+      "files": {
+        "icon": "/assets/icon.svg"
+      }
+    }
+  }
+}
 ```
 
 ---
 
-## 🎨 Step 3: Add `assets/icon.svg` & `package.json`
+## 🎨 Step 3: Add `assets/icon.svg`
 
 Add `assets/icon.svg`:
 
@@ -51,28 +68,6 @@ Add `assets/icon.svg`:
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#8B5CF6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
 </svg>
-```
-
-Add `package.json`:
-
-```json
-{
-  "name": "everything",
-  "version": "1.0.0",
-  "description": "Official Model Context Protocol reference test server",
-  "category": "mcp",
-  "author": "MCP Steering Group",
-  "license": "MIT",
-  "latest_version": "1.0.0",
-  "versions": {
-    "1.0.0": {
-      "files": {
-        "manifest": "manifest-mcp.yaml",
-        "icon": "assets/icon.svg"
-      }
-    }
-  }
-}
 ```
 
 ---

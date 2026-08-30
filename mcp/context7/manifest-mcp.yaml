@@ -14,7 +14,7 @@ execution:
   command: npx
   args:
     - "-y"
-    - "context7-mcp"
+    - "@upstash/context7-mcp"
 permissions:
   network_access: true
   file_system: none

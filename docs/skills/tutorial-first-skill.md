@@ -15,67 +15,69 @@ cd git-assistant
 
 ---
 
-## 📄 Step 2: Create `manifest-skill.yaml`
+## 📦 Step 2: Create `package.json`
 
-Create `manifest-skill.yaml` to define triggers and router metadata:
+Create `package.json` with package metadata and dependencies:
 
-```yaml
-name: "git-assistant"
-version: "1.0.0"
-description: "Assists developers with Git commit conventions, branch workflows, and merge conflict resolution."
-author: "Aryan"
-type: "skill"
-
-discovery:
-  semantic_triggers:
-    - "git help"
-    - "write commit message"
-    - "git workflow"
-    - "resolve merge conflict"
-
-dependencies:
-  plugins: []
-  mcp:
-    - "git"
-
-permissions:
-  filesystem: true
-  network: false
-  level: "ReadOnly"
-
-execution:
-  execution_mode: "auto"
-  default_turns: 2
+```json
+{
+  "id": "git-assistant",
+  "name": "Git Assistant",
+  "category": "engineering",
+  "hub_type": "skill",
+  "logo": "/assets/icon.svg",
+  "title": "Git Workflow Protocol",
+  "description": "Assists developers with Git commit conventions, branch workflows, and merge conflict resolution.",
+  "author": {
+    "name": "Aryan",
+    "url": "https://github.com/cluaiz"
+  },
+  "license": "Apache-2.0",
+  "tags": [
+    "Git",
+    "DevOps",
+    "Workflow"
+  ],
+  "dependencies": {
+    "plugins": {},
+    "mcp": {
+      "git": {
+        "version": "^1.0.0",
+        "url": "https://raw.githubusercontent.com/cluaiz/cluaiz-hub/main/mcp/git/package.json"
+      }
+    },
+    "skills": {}
+  },
+  "latest_version": "1.0.0",
+  "versions": {
+    "1.0.0": {
+      "updated_at": "2026-07-01T12:00:00Z",
+      "files": {
+        "skill": "/SKILL.md",
+        "icon": "/assets/icon.svg",
+        "file_directory": "https://github.com/cluaiz/cluaiz-hub/releases/download/v1.0.0/git-assistant-files.zip"
+      }
+    }
+  }
+}
 ```
 
 ---
 
 ## ✍️ Step 3: Create `SKILL.md`
 
-Create `SKILL.md` with full YAML frontmatter and instructional rules:
+Create `SKILL.md` with structured instructional rules:
 
 ```markdown
 ---
 id: cluaiz.skill.devops.git-assistant
 name: git-assistant
-version: 1.0.0
-description: Assists developers with Git commit conventions, branch workflows, and merge conflict resolution.
-author: Aryan
-soul_type: markdown
-
-permissions:
-  filesystem: true
-  network: false
-  level: ReadOnly
-  mcp_servers: []
-
 triggers:
   semantic:
     - "git help"
     - "write commit message"
     - "git workflow"
     - "resolve merge conflict"
-  entropy_threshold: 0.7
 ---
 
 # 🌿 Git Workflow Protocol
@@ -109,33 +111,6 @@ Create `assets/icon.svg` for UI rendering:
 
 ---
 
-## 📦 Step 5: Create `package.json`
-
-Create `package.json` for Cluaiz Hub distribution:
-
-```json
-{
-  "name": "git-assistant",
-  "version": "1.0.0",
-  "description": "Assists developers with Git commit conventions, branch workflows, and merge conflict resolution",
-  "category": "skill",
-  "author": "Aryan",
-  "license": "Apache-2.0",
-  "latest_version": "1.0.0",
-  "versions": {
-    "1.0.0": {
-      "files": {
-        "manifest": "manifest-skill.yaml",
-        "skill": "SKILL.md",
-        "icon": "assets/icon.svg"
-      }
-    }
-  }
-}
-```
-
----
-
-## 🧪 Step 6: Test Locally
+## 🧪 Step 5: Test Locally
 
 Copy the folder to `~/.cluaiz/tools/skills/git-assistant/`. The Cluaiz engine will automatically probe and register the new skill on the next inference query!

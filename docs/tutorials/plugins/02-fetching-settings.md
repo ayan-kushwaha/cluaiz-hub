@@ -14,24 +14,17 @@ Instead, plugins request `system_bindings` in their manifest, and the cluaiz Eng
 
 ## Step 1: Subscribe to Variables
 
-In your `manifest-plugin.yaml`, declare the hardware or booster variables you need.
+In your `package.json`, declare the dynamic settings you need:
 
-```yaml
-# ---------------------------------------------------------------------
-# CONFIGURATION SETTINGS
-# ---------------------------------------------------------------------
-# [NEW SCHEMA] Dynamic settings definition. This tells the UI and Engine 
-# what configurable variables exist, their types, and default values.
-settings:
-  api_key: { type: "string", default: "", desc: "API Key for service" }
-  mode: { type: "enum", options: ["fast", "accurate"], default: "fast", desc: "Execution mode" }
-
-# ---------------------------------------------------------------------
-# SYSTEM BINDINGS (Dynamic Hardware & Booster State)
-# ---------------------------------------------------------------------
-system_bindings:
-  - "system_booster.think_mode"
-  - "system_control.silicon_truth.cpu.logical_threads"
+```json
+{
+  "id": "cluaiz-math-accelerator",
+  "name": "Math Accelerator",
+  "settings": {
+    "precision": { "type": "number", "default": 10, "desc": "Decimal precision" },
+    "mode": { "type": "enum", "options": ["standard", "scientific"], "default": "standard", "desc": "Calculation mode" }
+  }
+}
 ```
 
 ## Step 2: Deserializing MsgPack in Rust

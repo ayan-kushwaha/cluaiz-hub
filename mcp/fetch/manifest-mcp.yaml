@@ -11,10 +11,9 @@ discovery:
     - "scrape url"
     - "fetch web content"
 execution:
-  command: npx
+  command: uvx
   args:
-    - "-y"
-    - "@modelcontextprotocol/server-fetch"
+    - "mcp-server-fetch"
 permissions:
   network_access: true
   file_system: none
