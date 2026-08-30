@@ -1,17 +1,26 @@
 {
-  "name": "code-reviewer",
-  "version": "1.0.0",
-  "description": "Strict multi-language code quality, security vulnerability, memory safety, and DRY enforcement protocol",
-  "category": "skill",
-  "author": "Aryan",
+  "id": "code-reviewer",
+  "name": "Code Reviewer",
+  "category": "engineering",
+  "hub_type": "skill",
+  "description": "Strict multi-language code quality, security vulnerability, memory safety, and DRY enforcement protocol.",
+  "author": {
+    "name": "Aryan",
+    "url": "https://github.com/cluaiz"
+  },
   "license": "Apache-2.0",
+  "tags": ["Code Review", "Security", "Rust", "Protocol"],
+  "dependencies": {
+    "plugins": {},
+    "mcp": {},
+    "skills": {}
+  },
   "latest_version": "1.0.0",
   "versions": {
     "1.0.0": {
+      "updated_at": "2026-07-01T12:00:00Z",
       "files": {
-        "manifest": "manifest-skill.yaml",
-        "skill": "SKILL.md",
-        "icon": "assets/icon.svg"
+        "skill": "SKILL.md"
       }
     }
   }

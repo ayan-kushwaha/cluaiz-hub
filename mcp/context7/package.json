@@ -1,16 +1,27 @@
 {
-  "name": "context7",
-  "version": "1.0.0",
-  "description": "Version-specific live library documentation and API reference lookup engine",
+  "id": "context7",
+  "name": "Context7 Documentation Engine",
   "category": "mcp",
-  "author": "Context7 Team",
+  "hub_type": "mcp",
+  "description": "Version-specific live library documentation and API reference lookup engine",
+  "author": {
+    "name": "Cluaiz Core Team",
+    "url": "https://github.com/cluaiz"
+  },
   "license": "MIT",
+  "tags": ["MCP", "Documentation", "Bridge"],
+  "dependencies": {
+    "plugins": {},
+    "mcp": {},
+    "skills": {}
+  },
   "latest_version": "1.0.0",
   "versions": {
     "1.0.0": {
-      "files": {
-        "manifest": "manifest-mcp.yaml"
-      }
+      "updated_at": "2026-07-01T12:00:00Z",
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp"],
+      "files": {}
     }
   }
 }

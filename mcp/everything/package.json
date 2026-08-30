@@ -1,16 +1,27 @@
 {
-  "name": "everything",
-  "version": "1.0.0",
-  "description": "Official Model Context Protocol reference test server exercising all MCP capabilities",
+  "id": "everything",
+  "name": "Everything MCP Test Server",
   "category": "mcp",
-  "author": "MCP Steering Group",
+  "hub_type": "mcp",
+  "description": "Official Model Context Protocol reference test server exercising all MCP capabilities",
+  "author": {
+    "name": "MCP Steering Group",
+    "url": "https://modelcontextprotocol.io"
+  },
   "license": "MIT",
+  "tags": ["MCP", "Reference", "Bridge"],
+  "dependencies": {
+    "plugins": {},
+    "mcp": {},
+    "skills": {}
+  },
   "latest_version": "1.0.0",
   "versions": {
     "1.0.0": {
-      "files": {
-        "manifest": "manifest-mcp.yaml"
-      }
+      "updated_at": "2026-07-01T12:00:00Z",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-everything"],
+      "files": {}
     }
   }
 }

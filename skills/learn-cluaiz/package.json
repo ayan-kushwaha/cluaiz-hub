@@ -1,17 +1,26 @@
 {
-  "name": "learn-cluaiz",
-  "version": "1.0.0",
-  "description": "Technical tutorial and architecture guide for the Cluaiz ecosystem",
-  "category": "skill",
-  "author": "Aryan",
+  "id": "learn-cluaiz",
+  "name": "Learn Cluaiz Guide",
+  "category": "utility",
+  "hub_type": "skill",
+  "description": "Technical tutorial and architecture guide for the Cluaiz ecosystem.",
+  "author": {
+    "name": "Aryan",
+    "url": "https://github.com/cluaiz"
+  },
   "license": "Apache-2.0",
+  "tags": ["Tutorial", "Architecture", "Learning", "Protocol"],
+  "dependencies": {
+    "plugins": {},
+    "mcp": {},
+    "skills": {}
+  },
   "latest_version": "1.0.0",
   "versions": {
     "1.0.0": {
+      "updated_at": "2026-07-01T12:00:00Z",
       "files": {
-        "manifest": "manifest-skill.yaml",
-        "skill": "SKILL.md",
-        "icon": "assets/icon.svg"
+        "skill": "SKILL.md"
       }
     }
   }

@@ -1,17 +1,29 @@
 {
-  "name": "sysinfo",
-  "version": "1.0.0",
+  "id": "sysinfo",
+  "name": "System Hardware Telemetry",
+  "category": "utility",
+  "hub_type": "plugin",
+  "build_type": "wasm",
   "description": "Real-time cross-platform hardware telemetry and resource utilization engine",
-  "category": "plugin",
-  "author": "Cluaiz Core Team",
+  "author": {
+    "name": "Cluaiz Core Team",
+    "url": "https://github.com/cluaiz"
+  },
   "license": "Apache-2.0",
+  "tags": ["System", "Telemetry", "Hardware", "WASM"],
+  "dependencies": {
+    "plugins": {},
+    "mcp": {},
+    "skills": {}
+  },
   "latest_version": "1.0.0",
   "versions": {
     "1.0.0": {
+      "updated_at": "2026-07-01T12:00:00Z",
+      "builds_os": ["wasm"],
       "files": {
-        "manifest": "manifest-plugin.yaml",
-        "skill": "SKILL.md",
-        "binary": "logic.wasm"
+        "binary": "logic.wasm",
+        "skill": "SKILL.md"
       }
     }
   }

@@ -1,16 +1,27 @@
 {
-  "name": "git",
-  "version": "1.0.0",
-  "description": "Official Model Context Protocol Git repository inspection and diff analysis bridge",
+  "id": "git",
+  "name": "Git Repository Bridge",
   "category": "mcp",
-  "author": "MCP Steering Group",
+  "hub_type": "mcp",
+  "description": "Official Model Context Protocol Git repository inspection and diff analysis bridge",
+  "author": {
+    "name": "MCP Steering Group",
+    "url": "https://modelcontextprotocol.io"
+  },
   "license": "MIT",
+  "tags": ["MCP", "Git", "VCS", "Bridge"],
+  "dependencies": {
+    "plugins": {},
+    "mcp": {},
+    "skills": {}
+  },
   "latest_version": "1.0.0",
   "versions": {
     "1.0.0": {
-      "files": {
-        "manifest": "manifest-mcp.yaml"
-      }
+      "updated_at": "2026-07-01T12:00:00Z",
+      "command": "uvx",
+      "args": ["mcp-server-git"],
+      "files": {}
     }
   }
 }
