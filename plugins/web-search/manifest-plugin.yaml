@@ -19,7 +19,7 @@ permissions:
   network_access: true
   vram_kv_inject: true
   file_system: "none"
-  mid_layer_jit_injection: true
+  prefix_caching: true
 
 settings:
   search_api_key: { type: "string", default: "", desc: "API Key for the search provider" }

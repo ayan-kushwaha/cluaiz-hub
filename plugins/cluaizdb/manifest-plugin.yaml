@@ -19,7 +19,7 @@ permissions:
   network_access: false
   vram_kv_inject: true
   file_system: "read_write"
-  mid_layer_jit_injection: true
+  prefix_caching: true
 
 system_bindings:
   - "system_booster.think_mode"

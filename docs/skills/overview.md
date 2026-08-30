@@ -27,11 +27,12 @@ skills/my-skill/
 
 Traditional AI applications suffer from the **"God Prompt" Anti-Pattern**—dumping thousands of lines of prompt instructions into the LLM context at boot time. This consumes massive amounts of VRAM and degrades attention accuracy.
 
-### The Cluaiz Solution: JIT Context Injection
+### The Cluaiz Solution: Prefix Caching & Dynamic Context Injection
 1. **Dormant by Default:** Skills occupy zero VRAM when inactive.
 2. **Semantic Activation:** When a user's prompt matches a skill's `discovery.semantic_triggers`, the `SkillRouter` activates the skill.
-3. **JIT Prompt Injection:** The contents of `SKILL.md` are injected into the active turn context.
-4. **Auto-Purge:** Upon turn completion, the prompt is purged from the context window, keeping inference fast and memory-efficient.
+3. **Dynamic Prompt Injection:** The contents of `SKILL.md` are injected into the active turn context.
+4. **Prefix Caching & Delta Decoding:** The engine matches prompt prefixes against active KV-cache memory and decodes only new delta tokens, eliminating redundant prefill computation.
+5. **Auto-Purge:** Upon turn completion, the prompt is purged from the context window, keeping inference fast and memory-efficient.
 
 ---
 

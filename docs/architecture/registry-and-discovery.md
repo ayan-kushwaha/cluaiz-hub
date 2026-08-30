@@ -79,5 +79,5 @@ flowchart TD
 During chat sessions, the engine does NOT dump all skill prompts into the context window (which wastes VRAM and slows down attention). Instead:
 
 1. **Fast Keyword & Embedding Matching:** `SkillRouter::match_query` matches the user prompt against `discovery.semantic_triggers` in $O(1)$ time.
-2. **Just-In-Time (JIT) Injection:** Only the matched `SKILL.md` prompt body is injected into the active turn context.
+2. **Prefix Caching & Dynamic Context Injection:** Only the matched `SKILL.md` prompt body is injected into the active turn context, preserving cached token prefixes.
 3. **Turn Purge:** Once the turn completes, the prompt is purged, keeping KV-cache lightweight and fast.

@@ -22,7 +22,7 @@ cluaiz-hub/docs/
 ### 🏗️ 1. Architecture (`docs/architecture/`)
 - [System Overview](file:///c:/Users/Aryan/my/Cluaiz-workspace/Cluaiz-Technologies/cluaiz-hub/docs/architecture/system-overview.md) — End-to-end system topology, engine boundaries, and security model.
 - [Turn Lifecycle](file:///c:/Users/Aryan/my/Cluaiz-workspace/Cluaiz-Technologies/cluaiz-hub/docs/architecture/turn-lifecycle.md) — Single-pass `<TRIGGER:...>` interception, pivot continuations, and turn lifecycles.
-- [Registry & Auto-Probe](file:///c:/Users/Aryan/my/Cluaiz-workspace/Cluaiz-Technologies/cluaiz-hub/docs/architecture/registry-and-discovery.md) — `ToolsRegistry`, boot-time filesystem probing, and JIT context injection.
+- [Registry & Auto-Probe](file:///c:/Users/Aryan/my/Cluaiz-workspace/Cluaiz-Technologies/cluaiz-hub/docs/architecture/registry-and-discovery.md) — `ToolsRegistry`, boot-time filesystem probing, and Prefix Caching.
 
 ---
 

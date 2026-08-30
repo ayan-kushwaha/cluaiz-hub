@@ -42,11 +42,11 @@ To take advantage of this architecture, you must write granular skills.
 `discovery.semantic_triggers: ["pull request", "issue"]`
 `SKILL.md`: *"Use the github MCP server to fetch PRs."*
 
-## Step 2: The JIT Injection (`mid_layer_jit_injection`)
+## Step 2: Prefix Caching & VRAM KV-Injection (`vram_kv_inject` & `prefix_caching`)
 
-If your skill orchestrates a powerful Plugin that generates massive amounts of data (like a database returning 50,000 rows), feeding that into the LLM context will instantly cause an Out-Of-Memory (OOM) crash.
+If your skill orchestrates a powerful Plugin that generates massive amounts of data (like a database returning 50,000 rows), feeding that raw text into the LLM context will instantly cause an Out-Of-Memory (OOM) crash.
 
-To handle this, Plugins can use `mid_layer_jit_injection: true`. 
-When the plugin executes, instead of returning the 50,000 rows to the LLM, the Plugin injects a **new, temporary skill** (a summarization prompt) directly into the Mid-Layer. The engine runs a sub-inference on the data in chunks, and only returns the final summary to the primary LLM session.
+To handle this, Plugins use `vram_kv_inject: true` and `prefix_caching: true`. 
+When the plugin executes, instead of returning 50,000 rows to the LLM, the Plugin injects structured context into the KV-Cache prefix. The engine runs a sub-inference on the data in chunks, and only returns the final summary delta tokens to the primary LLM session.
 
-By structuring your Skills carefully, you ensure the Engine remains lightning-fast and VRAM-efficient.
+By structuring your Skills carefully, you ensure the Engine remains fast and VRAM-efficient.

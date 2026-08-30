@@ -61,7 +61,7 @@ permissions:
   max_cpu_time_ms: 30000
   network_access: true
   allowed_hosts: ["api.github.com"]
-  mid_layer_jit_injection: false
+  prefix_caching: false
   file_system: "none"
 
 execution:

@@ -15,6 +15,7 @@ discovery:
     - "new tool"
     - "scaffold tool"
     - "tool foundry"
+  brain_manual: "SKILL.md"
 
 dependencies:
   plugins: []
